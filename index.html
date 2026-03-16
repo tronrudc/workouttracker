@@ -149,6 +149,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 
 /* Skipped badge */
 .skipped-badge{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:rgba(90,116,148,0.12);border:1px solid var(--skipped-border);padding:2px 8px;border-radius:10px;flex-shrink:0}
+.skip-toggle{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-lt);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:13px;color:var(--faint);background:transparent;font-weight:300;line-height:1}
+.skip-toggle:hover{border-color:var(--muted);color:var(--muted)}
+.ex-card.skipped .skip-toggle{background:rgba(90,116,148,0.2);border-color:var(--skipped-border);color:var(--muted)}
 
 .ex-head{display:flex;align-items:center;padding:13px 14px;gap:11px;user-select:none}
 .ex-head-tap{cursor:pointer}
@@ -186,16 +189,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .set-row{display:flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--border);background:rgba(255,255,255,0.018);border-radius:var(--radius);transition:all .2s}
 .set-row.set-logged{background:var(--logged-bg);border-color:var(--logged-border)}
 .set-num{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);width:26px;flex-shrink:0}
-.set-stepper{display:flex;align-items:center;gap:4px;flex:1}
-.set-step-group{display:flex;align-items:center;border:1px solid var(--border-lt);background:var(--surface2);border-radius:2px;overflow:hidden;transition:border-color .2s}
+.set-stepper{display:flex;align-items:center;gap:3px;flex:1;min-width:0;overflow:hidden}
+.set-step-group{display:flex;align-items:center;border:1px solid var(--border-lt);background:var(--surface2);border-radius:2px;overflow:hidden;transition:border-color .2s;flex-shrink:1}
 .set-row.set-logged .set-step-group{border-color:rgba(255,175,0,0.22)}
-.set-step-btn{width:28px;height:30px;background:none;border:none;font-size:16px;font-weight:200;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s;flex-shrink:0}
+.set-step-btn{width:26px;height:30px;background:none;border:none;font-size:16px;font-weight:200;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s;flex-shrink:0}
 .set-step-btn:hover{color:var(--gold);background:var(--gold-glow2)}
 .set-step-btn:active{transform:scale(0.88)}
-.set-step-val{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);min-width:32px;text-align:center;line-height:30px}
+.set-step-val{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);min-width:28px;max-width:44px;text-align:center;line-height:30px}
 .set-step-unit{font-size:10px;color:var(--faint);margin-right:2px}
 .set-sep{font-size:11px;color:var(--faint);padding:0 1px;opacity:0.6}
-.set-log-btn{padding:0 11px;height:30px;background:var(--gold);border:none;color:#0a0f18;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:opacity .15s,box-shadow .15s;flex-shrink:0;white-space:nowrap}
+.set-log-btn{padding:0 10px;height:30px;background:var(--gold);border:none;color:#0a0f18;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:opacity .15s,box-shadow .15s;flex-shrink:0;white-space:nowrap}
 .set-log-btn:hover{opacity:.85;box-shadow:0 0 10px var(--gold-glow)}
 .set-row.set-logged .set-log-btn{background:transparent;border:1px solid var(--logged-border);color:var(--gold);font-size:14px;font-weight:400;letter-spacing:0;padding:0 8px}
 
@@ -848,6 +851,11 @@ function closeCtx(){
   ctxTarget=null;
 }
 function ctxSkip(){if(!ctxTarget)return;skipped[ctxTarget.exId]=true;closeCtx();refreshEx(ctxTarget.exId);}
+function toggleSkip(exId,e){
+  e.stopPropagation();
+  skipped[exId]=!skipped[exId];
+  refreshEx(exId);
+}
 function ctxUnskip(){if(!ctxTarget)return;skipped[ctxTarget.exId]=false;closeCtx();refreshEx(ctxTarget.exId);}
 function ctxRename(){
   if(!ctxTarget)return;
