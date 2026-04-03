@@ -15,7 +15,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#0a0f18;--bg2:#0e1520;--surface:#121c2e;--surface2:#172236;--surface3:#1c2940;
+  --bg:#0a0f18;--bg2:#0e1520;--surface:#121c2e;--surface2:#172236;
   --border:rgba(255,255,255,0.06);--border-md:rgba(255,255,255,0.10);--border-lt:rgba(255,255,255,0.14);
   --text:#dce6f5;--text2:#a8bcd4;--muted:#5a7494;--faint:#2e4460;
   --gold:#ffaf00;--gold-dim:#cc8c00;
@@ -23,6 +23,7 @@
   --logged-bg:rgba(255,175,0,0.06);--logged-border:rgba(255,175,0,0.28);
   --skipped-bg:rgba(90,116,148,0.08);--skipped-border:rgba(90,116,148,0.3);
   --rehab-color:#e09060;--rehab-bg:rgba(224,144,96,0.10);
+  --breath-color:#5b9bd5;--breath-bg:rgba(91,155,213,0.10);
   --warn:#d44030;--radius:3px;
 }
 html{scroll-behavior:smooth}
@@ -52,7 +53,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* QUOTE */
-.quote-card{padding:26px 0 26px;border-bottom:1px solid var(--border);margin-bottom:28px;cursor:pointer;position:relative}
+.quote-card{padding:26px 0;border-bottom:1px solid var(--border);margin-bottom:28px;cursor:pointer;position:relative}
 .quote-open{position:absolute;top:20px;left:0;font-family:'Playfair Display',serif;font-size:55px;line-height:1;color:var(--gold);opacity:0.15;pointer-events:none;font-style:italic}
 .quote-body{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;font-weight:400;line-height:1.6;color:var(--text2);transition:opacity .25s;padding:0 28px 0 18px}
 .quote-attr{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:12px;padding-left:18px;display:flex;align-items:center;gap:8px}
@@ -60,14 +61,18 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .quote-refresh{position:absolute;top:26px;right:0;color:var(--faint);font-size:16px;transition:color .2s,transform .4s cubic-bezier(.4,0,.2,1);user-select:none;padding:4px}
 .quote-card:hover .quote-refresh{color:var(--gold);transform:rotate(180deg)}
 
-/* STAT PANELS */
+/* HOME STATS */
 .bench-target{background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:20px 18px;margin-bottom:14px;position:relative;overflow:hidden}
 .bench-target::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .bt-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .bt-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
 .bt-deadline{font-size:10px;color:var(--warn);letter-spacing:0.5px;font-weight:500}
 .bt-main{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
-.bt-current{font-family:'Playfair Display',serif;font-size:36px;color:var(--text);line-height:1}
+.bt-current-wrap{display:flex;align-items:baseline;gap:4px;cursor:pointer}
+.bt-current{font-family:'Playfair Display',serif;font-size:36px;color:var(--text);line-height:1;cursor:pointer;border-bottom:1px solid transparent;transition:border-color .2s}
+.bt-current:hover{border-bottom-color:var(--gold)}
+.bt-current-inp{font-family:'Playfair Display',serif;font-size:36px;color:var(--gold);background:transparent;border:none;border-bottom:1px solid var(--gold);outline:none;width:80px;text-align:left;padding:0;-moz-appearance:textfield}
+.bt-current-inp::-webkit-inner-spin-button,.bt-current-inp::-webkit-outer-spin-button{-webkit-appearance:none}
 .bt-arrow{font-size:14px;color:var(--faint)}
 .bt-target{font-family:'Playfair Display',serif;font-size:36px;color:var(--gold);line-height:1}
 .bt-sub{font-size:11px;color:var(--muted);margin-bottom:14px}
@@ -80,12 +85,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .goals-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px}
 .goal-cell{background:var(--surface);padding:16px 16px 14px}
 .goal-lbl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.goal-num{font-family:'Playfair Display',serif;font-size:32px;font-weight:400;color:var(--gold);line-height:1}
+.goal-num{font-family:'Playfair Display',serif;font-size:32px;font-weight:400;color:var(--gold);line-height:1;cursor:pointer;border-bottom:1px solid transparent;transition:border-color .2s;display:inline-block}
+.goal-num:hover{border-bottom-color:var(--gold)}
+.goal-num-inp{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);background:transparent;border:none;border-bottom:1px solid var(--gold);outline:none;width:70px;padding:0;-moz-appearance:textfield}
+.goal-num-inp::-webkit-inner-spin-button,.goal-num-inp::-webkit-outer-spin-button{-webkit-appearance:none}
 .goal-unit{font-size:11px;color:var(--muted);margin-top:4px}
-.goal-edit-row{display:flex;align-items:center;gap:6px;margin-top:8px}
-.goal-edit-lbl{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)}
-.goal-seed-inp{background:none;border:none;border-bottom:1px solid var(--border-lt);font-family:'Playfair Display',serif;font-size:16px;color:var(--muted);width:36px;text-align:center;outline:none;padding:0 2px;transition:border-color .2s,color .2s}
-.goal-seed-inp:focus{border-bottom-color:var(--gold);color:var(--text)}
 
 .weight-row{display:flex;align-items:center;gap:10px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;flex-wrap:wrap}
 .weight-row label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)}
@@ -94,7 +98,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .weight-kg{font-size:12px;color:var(--muted)}
 .weight-gap{font-size:12px;color:var(--gold);margin-left:auto;font-weight:500}
 .weight-goal-hint{font-size:11px;color:var(--muted)}
-
 .last-sess{padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
 .last-lbl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 .last-body{font-size:13px;color:var(--text2);line-height:1.8}
@@ -121,6 +124,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .checkin-area:focus{border-color:rgba(255,175,0,0.4)}
 .checkin-area::placeholder{color:var(--faint);font-style:italic}
 
+/* ABBY NOTE */
+.abby-note{padding:10px 13px;background:rgba(91,155,213,0.06);border-left:2px solid var(--breath-color);border-radius:0 var(--radius) var(--radius) 0;margin:10px 0;font-size:11px;color:var(--text2);font-style:italic;line-height:1.6}
+.abby-note strong{color:var(--breath-color);font-style:normal;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:3px}
+
 /* BLOCK */
 .block-sec{margin-bottom:22px}
 .block-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:0.85;padding:0 0 9px;display:flex;align-items:center;gap:10px}
@@ -133,48 +140,35 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .ex-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden;transition:border-color .25s,background .25s,box-shadow .25s;position:relative}
 .ex-card:hover{border-color:var(--border-md)}
 .ex-card.done{border-color:var(--logged-border);background:var(--logged-bg);box-shadow:0 0 24px var(--gold-glow3)}
-.ex-card.skipped{border-color:var(--skipped-border);background:var(--skipped-bg)}
-.ex-card.skipped .ex-name{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--faint)}
+.ex-card.done::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:shimmer 2s ease-in-out infinite}
+@keyframes shimmer{0%,100%{opacity:0.3}50%{opacity:0.8}}
+.ex-card.skipped{border-color:var(--skipped-border);background:var(--skipped-bg);opacity:0.65}
+.ex-card.skipped .ex-name{text-decoration:line-through;text-decoration-color:var(--faint)}
 .superset-wrap .ex-card{border-radius:0;border-left:none}
 .superset-wrap .ex-card:first-child{border-top-right-radius:var(--radius)}
 .superset-wrap .ex-card:last-child{border-bottom-left-radius:var(--radius);border-bottom-right-radius:var(--radius)}
 
-/* Done state — elegant gold shimmer */
-.ex-card.done::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  animation:shimmer 2s ease-in-out infinite;
-}
-@keyframes shimmer{0%,100%{opacity:0.3}50%{opacity:0.8}}
-
-/* Skipped badge */
-.skipped-badge{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:rgba(90,116,148,0.12);border:1px solid var(--skipped-border);padding:2px 8px;border-radius:10px;flex-shrink:0}
-.skip-toggle{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-lt);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:13px;color:var(--faint);background:transparent;font-weight:300;line-height:1}
-.skip-toggle:hover{border-color:var(--muted);color:var(--muted)}
-.ex-card.skipped .skip-toggle{background:rgba(90,116,148,0.2);border-color:var(--skipped-border);color:var(--muted)}
-
 .ex-head{display:flex;align-items:center;padding:13px 14px;gap:11px;user-select:none}
-.ex-head-tap{cursor:pointer}
-.ex-tick{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-lt);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:10px;color:transparent;position:relative}
+.ex-tick{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-lt);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:10px;color:transparent;cursor:pointer;position:relative}
 .ex-tick::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid transparent;transition:border-color .25s}
 .ex-card.done .ex-tick{background:var(--gold);border-color:var(--gold);color:#0a0f18;font-weight:700}
 .ex-card.done .ex-tick::after{border-color:var(--gold-glow)}
-.ex-card.skipped .ex-tick{background:rgba(90,116,148,0.15);border-color:var(--skipped-border);color:var(--muted);font-size:11px}
-.ex-meta{flex:1;min-width:0}
-.ex-name{font-size:14px;font-weight:500;color:var(--text);letter-spacing:0.1px;cursor:text}
+.ex-card.skipped .ex-tick{background:rgba(90,116,148,0.25);border-color:var(--skipped-border);color:var(--muted);font-size:13px;font-weight:700}
+.ex-meta{flex:1;min-width:0;cursor:pointer}
+.ex-name{font-size:14px;font-weight:500;color:var(--text);letter-spacing:0.1px}
 .ex-name-renamed{color:var(--gold);opacity:0.9}
 .ex-presc{font-size:11px;color:var(--muted);margin-top:2px}
-.ex-tag-rehab{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rehab-color);background:var(--rehab-bg);padding:2px 7px;border-radius:20px;flex-shrink:0;border:1px solid rgba(224,144,96,0.2)}
+.ex-tags{display:flex;gap:5px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.ex-tag-rehab{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rehab-color);background:var(--rehab-bg);padding:2px 7px;border-radius:20px;border:1px solid rgba(224,144,96,0.2)}
+.ex-tag-breath{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--breath-color);background:var(--breath-bg);padding:2px 7px;border-radius:20px;border:1px solid rgba(91,155,213,0.2)}
 .ex-summary{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);white-space:nowrap;line-height:1}
+.skip-toggle{width:28px;height:28px;border-radius:4px;border:1.5px solid var(--border-lt);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:11px;color:var(--faint);background:transparent;font-family:'DM Sans',sans-serif;padding:0}
+.skip-toggle:hover{border-color:var(--muted);color:var(--muted);background:rgba(90,116,148,0.08)}
+.ex-card.skipped .skip-toggle{background:rgba(90,116,148,0.15);border-color:var(--skipped-border);color:var(--muted)}
 
 .ex-body{padding:0 14px 14px;border-top:1px solid var(--border)}
 .ex-card.done .ex-body{border-top-color:var(--logged-border)}
 .ex-card.skipped .ex-body{display:none}
-
-/* WARMUP SET ROW (checkbox style) */
-.warmup-set-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);margin-bottom:4px}
-.warmup-set-lbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);flex:1}
-.warmup-set-weight{font-size:12px;color:var(--faint)}
 
 /* LAST SESSION */
 .last-sets-block{margin:12px 0 10px;padding:10px 12px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--radius)}
@@ -183,6 +177,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .last-set-chip{font-size:11px;color:var(--text2);background:var(--surface2);border:1px solid var(--border);padding:4px 9px;border-radius:2px}
 .last-note-block{font-size:11px;color:var(--text2);font-style:italic;margin-bottom:9px;padding:7px 11px;border-left:2px solid rgba(255,175,0,0.22);background:var(--gold-glow3);border-radius:0 var(--radius) var(--radius) 0;line-height:1.5}
 
+/* WARMUP SET */
+.warmup-set-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);margin-bottom:4px}
+.warmup-set-lbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);flex:1}
+.warmup-set-weight{font-size:12px;color:var(--faint)}
+
 /* SETS */
 .sets-title{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:12px 0 7px}
 .sets-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
@@ -190,12 +189,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .set-row.set-logged{background:var(--logged-bg);border-color:var(--logged-border)}
 .set-num{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);width:26px;flex-shrink:0}
 .set-stepper{display:flex;align-items:center;gap:3px;flex:1;min-width:0;overflow:hidden}
-.set-step-group{display:flex;align-items:center;border:1px solid var(--border-lt);background:var(--surface2);border-radius:2px;overflow:hidden;transition:border-color .2s;flex-shrink:1}
+.set-step-group{display:flex;align-items:center;border:1px solid var(--border-lt);background:var(--surface2);border-radius:2px;overflow:hidden;flex-shrink:1}
 .set-row.set-logged .set-step-group{border-color:rgba(255,175,0,0.22)}
 .set-step-btn{width:26px;height:30px;background:none;border:none;font-size:16px;font-weight:200;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s;flex-shrink:0}
 .set-step-btn:hover{color:var(--gold);background:var(--gold-glow2)}
 .set-step-btn:active{transform:scale(0.88)}
-.set-step-val{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);min-width:28px;max-width:44px;text-align:center;line-height:30px}
+.set-step-val{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);min-width:28px;max-width:44px;text-align:center;line-height:30px;cursor:text}
+.set-step-inp{font-family:'Playfair Display',serif;font-size:17px;color:var(--gold);background:transparent;border:none;border-bottom:1px solid var(--gold);outline:none;width:44px;text-align:center;line-height:30px;padding:0;-moz-appearance:textfield}
+.set-step-inp::-webkit-inner-spin-button,.set-step-inp::-webkit-outer-spin-button{-webkit-appearance:none}
 .set-step-unit{font-size:10px;color:var(--faint);margin-right:2px}
 .set-sep{font-size:11px;color:var(--faint);padding:0 1px;opacity:0.6}
 .set-log-btn{padding:0 10px;height:30px;background:var(--gold);border:none;color:#0a0f18;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:opacity .15s,box-shadow .15s;flex-shrink:0;white-space:nowrap}
@@ -242,33 +243,23 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 @keyframes ctxIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 .ctx-item{padding:11px 16px;font-size:13px;color:var(--text2);cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:10px;white-space:nowrap}
 .ctx-item:hover{background:var(--gold-glow2);color:var(--text)}
-.ctx-item.danger{color:#e07070}
-.ctx-item.danger:hover{background:rgba(212,64,48,0.1);color:#f08080}
 .ctx-sep{height:1px;background:var(--border);margin:4px 0}
-
-/* RENAME INPUT */
-.rename-input{background:transparent;border:none;border-bottom:1px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;outline:none;width:100%;padding:2px 0;letter-spacing:0.1px}
+.rename-input{background:transparent;border:none;border-bottom:1px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;outline:none;width:100%;padding:2px 0}
 
 /* ADD CUSTOM */
-.add-custom-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:1px dashed var(--border-md);border-radius:var(--radius);padding:12px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);transition:all .2s;margin-top:4px;letter-spacing:0.3px}
+.add-custom-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:1px dashed var(--border-md);border-radius:var(--radius);padding:12px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);transition:all .2s;margin-top:4px}
 .add-custom-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-glow3)}
 .add-custom-plus{font-size:19px;font-weight:200;line-height:1;color:var(--gold);opacity:0.7}
-
-/* CUSTOM FORM */
 .custom-form{background:var(--surface);border:1px solid var(--border-md);border-radius:var(--radius);padding:16px 14px;margin-bottom:8px}
 .custom-form-title{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 .custom-name-inp{width:100%;border:none;border-bottom:1px solid var(--border-lt);background:none;font-family:'Playfair Display',serif;font-size:20px;color:var(--text);outline:none;padding:4px 0 7px;margin-bottom:14px;transition:border-color .2s}
 .custom-name-inp:focus{border-bottom-color:var(--gold)}
 .custom-name-inp::placeholder{color:var(--faint);font-style:italic}
-
-/* Metric type toggle */
 .metric-toggle{display:flex;gap:6px;margin-bottom:12px}
 .metric-toggle-btn{flex:1;padding:7px;border:1px solid var(--border-md);background:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .2s}
 .metric-toggle-btn.active{border-color:var(--gold);color:var(--gold);background:var(--gold-glow3)}
-
 .custom-form-btns{display:flex;gap:8px;margin-top:10px}
 .custom-save-btn{flex:1;background:var(--gold);color:#0a0f18;border:none;padding:10px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity .15s}
-.custom-save-btn:hover{opacity:.85}
 .custom-cancel-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:10px 14px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .15s}
 .custom-cancel-btn:hover{border-color:var(--warn);color:var(--warn)}
 .add-set-btn{background:none;border:1px dashed var(--border-md);width:100%;padding:7px 12px;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--muted);cursor:pointer;transition:all .2s;margin-bottom:8px;border-radius:2px}
@@ -288,22 +279,23 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .modal-ov.show .modal{transform:translateY(0)}
 .modal-eye{font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.modal-title{font-family:'Playfair Display',serif;font-size:42px;font-weight:400;line-height:1.05;margin-bottom:24px;color:var(--text)}
-.modal-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border-md);border-radius:var(--radius);overflow:hidden;margin-bottom:24px}
+.modal-title{font-family:'Playfair Display',serif;font-size:38px;font-weight:400;line-height:1.05;margin-bottom:20px;color:var(--text)}
+.modal-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border-md);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
 .modal-stat{background:var(--surface);padding:14px 16px}
-.modal-stat-val{font-family:'Playfair Display',serif;font-size:34px;color:var(--gold);line-height:1}
+.modal-stat-val{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);line-height:1}
 .modal-stat-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px}
-.modal-quote{padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:20px}
+.modal-quote{padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:18px}
 .modal-qt{font-family:'Playfair Display',serif;font-size:17px;font-style:italic;font-weight:400;line-height:1.65;color:var(--text2)}
 .modal-qa{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:10px;display:flex;align-items:center;gap:8px}
 .modal-qa::before{content:'';width:12px;height:1px;background:var(--gold);opacity:0.5}
-.modal-copy-btn{width:100%;background:none;border:1px solid var(--border-md);color:var(--text2);padding:13px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:10px}
-.modal-copy-btn:hover,.modal-copy-btn.copied{border-color:var(--gold);color:var(--gold);background:var(--gold-glow3)}
-.modal-close{width:100%;background:var(--gold);color:#0a0f18;border:none;padding:15px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:opacity .15s,box-shadow .2s}
-.modal-close:hover{opacity:.9;box-shadow:0 0 20px var(--gold-glow)}
+.modal-btn-gold{width:100%;background:var(--gold);color:#0a0f18;border:none;padding:15px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:opacity .15s,box-shadow .2s;margin-bottom:10px;display:block}
+.modal-btn-gold:hover{opacity:.9;box-shadow:0 0 20px var(--gold-glow)}
+.modal-btn-outline{width:100%;background:none;border:1px solid var(--border-md);color:var(--text2);padding:13px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:10px}
+.modal-btn-outline:hover,.modal-btn-outline.copied{border-color:var(--gold);color:var(--gold);background:var(--gold-glow3)}
 
 /* HISTORY */
-.hist-entry{display:flex;justify-content:space-between;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--border);animation:fadeUp .2s ease}
+.hist-entry{display:flex;justify-content:space-between;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s}
+.hist-entry:hover{opacity:0.8}
 .hist-entry:first-child{border-top:1px solid var(--border)}
 .h-date{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .h-name{font-size:14px;color:var(--text);font-weight:500}
@@ -311,8 +303,30 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .h-stat{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);line-height:1}
 .h-sub{font-size:10px;color:var(--muted);margin-top:3px}
 .empty-state{font-size:14px;color:var(--muted);padding:28px 0;font-style:italic;text-align:center}
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:2px}
+
+/* HISTORY DETAIL MODAL */
+.hist-detail-modal{background:var(--bg2);border-top:1px solid var(--border-md);border-left:1px solid var(--border);border-right:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;padding:28px 24px 44px;max-width:480px;width:100%;transform:translateY(40px);transition:transform .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;max-height:88vh;overflow-y:auto}
+.hist-detail-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.modal-ov.show .hist-detail-modal{transform:translateY(0)}
+.hd-header{margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.hd-sess-num{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.hd-title{font-family:'Playfair Display',serif;font-size:26px;color:var(--text);margin-bottom:4px}
+.hd-sub{font-size:11px;color:var(--muted)}
+.hd-meta{display:flex;gap:16px;margin-top:10px}
+.hd-meta-item{font-size:11px;color:var(--muted)}
+.hd-meta-item strong{color:var(--gold);font-family:'Playfair Display',serif;font-size:18px;display:block;font-weight:400}
+.hd-checkin{padding:10px 12px;background:var(--gold-glow3);border-left:2px solid rgba(255,175,0,0.3);border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;font-size:12px;color:var(--text2);font-style:italic;line-height:1.5}
+.hd-group{margin-bottom:18px}
+.hd-group-title{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);opacity:0.8;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.hd-ex{margin-bottom:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.hd-ex.hd-ex-done{border-color:var(--logged-border);background:var(--logged-bg)}
+.hd-ex.hd-ex-skipped{opacity:0.6}
+.hd-ex-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.hd-ex-check{width:16px;height:16px;border-radius:50%;background:var(--gold);display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:#0a0f18;font-weight:700;flex-shrink:0}
+.hd-ex-skip{width:16px;height:16px;border-radius:50%;background:rgba(90,116,148,0.3);display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);flex-shrink:0}
+.hd-sets{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.hd-set-chip{font-size:11px;color:var(--text2);background:var(--surface2);border:1px solid var(--border);padding:3px 8px;border-radius:2px}
+.hd-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:4px}
 </style>
 </head>
 <body>
@@ -338,14 +352,28 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     </div>
     <div class="bench-target">
       <div class="bt-top"><div class="bt-label">Bench Press Target</div><div class="bt-deadline" id="btDeadline"></div></div>
-      <div class="bt-main"><div class="bt-current" id="btCurrent">40</div><div class="bt-arrow">→</div><div class="bt-target">50 kg × 8</div></div>
+      <div class="bt-main">
+        <div class="bt-current-wrap" onclick="editBenchCurrent()">
+          <span class="bt-current" id="btCurrent">42.5</span>
+        </div>
+        <div class="bt-arrow">→</div>
+        <div class="bt-target">50 kg × 8</div>
+      </div>
       <div class="bt-sub" id="btSub"></div>
       <div class="bt-bar-bg"><div class="bt-bar-fill" id="btBarFill" style="width:0%"></div></div>
-      <div class="bt-bar-labels"><span class="bt-bar-lbl" id="btBarL">0 kg</span><span class="bt-bar-lbl">50 kg</span></div>
+      <div class="bt-bar-labels"><span class="bt-bar-lbl" id="btBarL">42.5 kg</span><span class="bt-bar-lbl">50 kg</span></div>
     </div>
     <div class="goals-grid">
-      <div class="goal-cell"><div class="goal-lbl">Sessions This Year</div><div class="goal-num" id="yearSessions">25</div><div class="goal-unit">and counting</div><div class="goal-edit-row"><span class="goal-edit-lbl">Adjust</span><input class="goal-seed-inp" type="number" id="yearSeedInp" min="0" oninput="saveSeed('year',this.value);updateHomeStats()"></div></div>
-      <div class="goal-cell"><div class="goal-lbl">This Month</div><div class="goal-num" id="goalSessions">2</div><div class="goal-unit">of 8 sessions</div><div class="goal-edit-row"><span class="goal-edit-lbl">Adjust</span><input class="goal-seed-inp" type="number" id="monthSeedInp" min="0" oninput="saveSeed('month',this.value);updateHomeStats()"></div></div>
+      <div class="goal-cell">
+        <div class="goal-lbl">Sessions This Year</div>
+        <div id="yearNumWrap"><span class="goal-num" id="yearSessions" onclick="editGoalNum('year')">25</span></div>
+        <div class="goal-unit">and counting</div>
+      </div>
+      <div class="goal-cell">
+        <div class="goal-lbl">This Month</div>
+        <div id="monthNumWrap"><span class="goal-num" id="goalSessions" onclick="editGoalNum('month')">2</span></div>
+        <div class="goal-unit">of 8 sessions</div>
+      </div>
     </div>
     <div class="weight-row">
       <label>Current weight</label>
@@ -360,8 +388,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <!-- SESSION -->
   <div class="page" id="page-session">
     <div class="sess-tabs">
-      <button class="sess-tab active" onclick="selectSess('A',this)"><div class="stab-name">Sun Eater</div><div class="stab-sub">Chest · Arms</div></button>
-      <button class="sess-tab" onclick="selectSess('B',this)"><div class="stab-name">Bridge 4</div><div class="stab-sub">Incline · Legs</div></button>
+      <button class="sess-tab active" onclick="selectSess('A',this)"><div class="stab-name">Sun Eater</div><div class="stab-sub">Chest · Core</div></button>
+      <button class="sess-tab" onclick="selectSess('B',this)"><div class="stab-name">Bridge 4</div><div class="stab-sub">Pull · Legs</div></button>
       <button class="sess-tab" onclick="selectSess('C',this)"><div class="stab-name">Sylphrena</div><div class="stab-sub">Freestyle</div></button>
     </div>
     <div id="sessContent"></div>
@@ -373,21 +401,39 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 
 <div class="finish-bar" id="finishBar">
   <button class="btn-reset" onclick="resetSess()">Reset</button>
-  <button class="btn-finish" onclick="finishSess()">Complete Session</button>
+  <button class="btn-finish" onclick="confirmFinish()">Complete Session</button>
 </div>
 
+<!-- CONFIRM MODAL -->
+<div class="modal-ov" id="confirmModal">
+  <div class="modal" style="padding-bottom:32px">
+    <div class="modal-eye">Are you sure?</div>
+    <div class="modal-title" style="font-size:30px;margin-bottom:14px">Complete<br>this session?</div>
+    <div id="confirmSummary" style="font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.6"></div>
+    <button class="modal-btn-gold" onclick="doFinish()">Yes, Complete Session</button>
+    <button class="modal-btn-outline" onclick="closeConfirm()">↩ Continue Session</button>
+  </div>
+</div>
+
+<!-- COMPLETION MODAL -->
 <div class="modal-ov" id="modal">
   <div class="modal">
     <div class="modal-eye" id="modalEye"></div>
     <div class="modal-title">Session<br>Complete.</div>
     <div class="modal-stats" id="modalStats"></div>
     <div class="modal-quote"><div class="modal-qt" id="modalQt"></div><div class="modal-qa" id="modalQa"></div></div>
-    <button class="modal-copy-btn" id="copyBtn" onclick="copySummary()"><span>⎘</span> Copy Session Summary</button>
-    <button class="modal-close" onclick="closeModal()">Back to Home</button>
+    <button class="modal-btn-outline" id="copyBtn" onclick="copySummary()" style="margin-bottom:10px"><span>⎘</span> Copy Session Summary</button>
+    <button class="modal-btn-outline" onclick="resumeSession()" style="margin-bottom:10px">↩ Resume Session</button>
+    <button class="modal-btn-gold" onclick="closeModal()">Back to Home</button>
   </div>
 </div>
 
-<!-- Context menu -->
+<!-- HISTORY DETAIL MODAL -->
+<div class="modal-ov" id="histModal">
+  <div class="hist-detail-modal" id="histModalContent"></div>
+</div>
+
+<!-- CONTEXT MENU -->
 <div class="ctx-overlay" id="ctxOverlay" style="display:none" onclick="closeCtx()"></div>
 <div class="ctx-menu" id="ctxMenu" style="display:none"></div>
 
@@ -405,84 +451,99 @@ const QUOTES=[
   {t:"The body achieves what the mind believes.",a:"Unknown"},
 ];
 
-// ── SESSION TEMPLATES ─────────────────────────────────────
+// ── SESSION TEMPLATES ─────────────────────────────────────────────────
 const SESSIONS={
-  A:{label:"Sun Eater",sub:"Chest · Arms · Back",groups:[
+  A:{label:"Sun Eater",sub:"Chest · Core · Arms · Back",groups:[
     {title:"Warm-Up",exercises:[
       {id:"wu_row_a",type:"warmup",name:"Rowing Machine",metrics:[
         {id:"setting",label:"Setting",val:"9",step:1,unit:"",min:1,max:20},
         {id:"duration",label:"Duration",val:"5",step:1,unit:"min",min:1,max:30},
         {id:"distance",label:"Distance",val:"1000",step:50,unit:"m",min:0,max:5000},
       ]},
-      {id:"wu_bands_a",type:"checkbox",name:"Band Pull-Aparts"},
+      {id:"wu_mobility_a",type:"checkbox",name:"Mobility (arm circles, thoracic openers, knee-to-chest, spinal twist, knee hug)"},
+      {id:"wu_breath_a",type:"checkbox",name:"Breathing Reset — 60 sec (hands on lower ribs, 2–3 in / 3–4 out, pause at end)",breath:true},
     ]},
-    {title:"Compound Lifts",exercises:[
-      {id:"bench",name:"Flat Bench Press",prescription:"4 × 6–8 · 2.5 min rest",sets:4,dw:"40",dr:"8",note:"2-sec descent. Drive feet into floor.",stepW:2.5,warmupSet:true},
-      {id:"dlp",name:"Diverging Lat Pulldown",prescription:"3 × 8–10 · 2 min rest",sets:3,dw:"54",dr:"10",note:"Full stretch at top. 3-sec controlled return.",rehab:true,stepW:2},
-      {id:"row_a",name:"Seated Cable Row",prescription:"3 × 10–12 · 2 min rest",sets:3,dw:"36",dr:"10",note:"Retract scapula before pulling. No lower back rounding.",rehab:true,stepW:2},
+    {title:"Core + Chest Supersets",exercises:[
+      {id:"incline_bench",name:"Incline Barbell Bench Press",prescription:"4 × 8 · 2.5 min rest",sets:4,dw:"35",dr:"8",note:"Progression: add 2.5 kg when all 4×8 clean, twice in a row.",warmupSet:true,breath:true,
+        abbyNote:"Engage your core instead of flaring at the ribs. Draw your ribs towards your hips. Exhale on the press, inhale on the way down — belly first, not chest."},
     ]},
-    {title:"Core Superset",superset:true,exercises:[
-      {id:"crunch",name:"Weighted Cable Crunch",prescription:"3 × 12–15",sets:3,dw:"27",dr:"12",note:"Technique over load. Slow and controlled.",stepW:2},
-      {id:"legraise",name:"Leg Raises",prescription:"3 × 12",sets:3,dw:"—",dr:"12",note:"Controlled descent. No momentum.",noStepW:true},
+    {title:"Superset 2A/2B",superset:true,exercises:[
+      {id:"cable_crunch",name:"Weighted Cable Crunch",prescription:"3 × 13",sets:3,dw:"27",dr:"13",note:"Hold 27 kg, push toward 3×15 before adding weight.",breath:true,
+        abbyNote:"Exhale fully as you crunch down — let the breath drive the movement, not the other way around."},
+      {id:"dead_bug",name:"Dead Bug",prescription:"3 × 8/side",sets:3,dw:"—",dr:"8",note:"Active rest from the crunch. Keep it slow. If you rush it, you're doing it wrong.",noStepW:true,breath:true,
+        abbyNote:"Controlled movements — 1 count inhale, 3–4 count slow exhale as you extend the limbs. No breath-holding under any circumstance."},
     ]},
-    {title:"Arm Superset",superset:true,exercises:[
-      {id:"curl",name:"EZ Bar Bicep Curl",prescription:"3 × 10–12",sets:3,dw:"19",dr:"10",note:"Ready to push to 20 kg. Strict form.",stepW:1.25},
-      {id:"tricep",name:"Triceps Rope Pushdown",prescription:"3 × 10–12",sets:3,dw:"12",dr:"10",note:"Full extension. Don't flare elbows.",stepW:1},
+    {title:"Chest-Supported Row",exercises:[
+      {id:"cs_row_a",name:"Chest-Supported DB Row",prescription:"3 × 10–12 · 2 min rest",sets:3,dw:"16",dr:"10",note:"You should feel this exclusively in your mid-back and rear delts. No lower back involvement at all. If your lower back is working, the chest pad isn't supporting you properly — adjust the bench angle. Progression: add 2 kg when 3×12 is controlled across both sets.",breath:true,
+        abbyNote:"Exhale during the pull, inhale on the return — lower ribs expanding, shoulders staying down."},
+    ]},
+    {title:"Superset 4A/4B",superset:true,exercises:[
+      {id:"cable_fly",name:"Cable Pec Fly",prescription:"3 × 12",sets:3,dw:"15",dr:"12",note:"15–18 kg per side. Keep a slight elbow bend throughout. Pause at the peak contraction.",
+        abbyNote:"Use a quick reset if you feel chest tightness — purse lips like blowing through a straw, then transition to nasal breathing."},
+      {id:"bird_dog",name:"Bird Dog",prescription:"3 × 8/side",sets:3,dw:"—",dr:"8",note:"Pairs with pec fly as active rest. Move slowly and deliberately. If you rush it, you lose the diaphragm connection entirely.",noStepW:true,breath:true,
+        abbyNote:"Draw your ribs towards your hips before you extend. That's your core engaging — not your lower back taking over."},
+    ]},
+    {title:"Arm Superset 5A/5B",superset:true,exercises:[
+      {id:"incline_curl",name:"Incline DB Bicep Curl",prescription:"3 × 10–12",sets:3,dw:"9",dr:"10",note:"Targets the long head of the bicep specifically. It will feel harder than your EZ bar work at the same weight. That's correct. Progression: curls at 9–10 kg. Move to 10–11 kg when 3×12 is clean.",
+        abbyNote:"Between sets — drop the shoulders, shift attention to the exhale. Even 10 seconds of this between exercises maintains the pattern you're building."},
+      {id:"tricep_push_a",name:"Tricep Rope Pushdown",prescription:"3 × 12–15",sets:3,dw:"15",dr:"12",note:"Push toward 3×15 before increasing weight."},
     ]},
     {title:"Finisher",exercises:[
-      {id:"facepull_a",name:"Face Pulls",prescription:"3 × 15 · 90 sec",sets:3,dw:"32",dr:"15",note:"Mandatory. Full external rotation at end range.",rehab:true,stepW:2},
+      {id:"face_pulls_a",name:"Face Pulls",prescription:"2 × 15 · 60 sec",sets:2,dw:"27",dr:"15",note:"Mandatory. Protects the rotator cuff on every push day. Non-negotiable even on depleted sessions if the ⭐ block is done.",rehab:true},
     ]},
     {title:"Rewind",exercises:[
-      {id:"breathe_a",type:"checkbox",name:"Diaphragmatic Breathing (2–15 min)"},
+      {id:"rewind_a",type:"checkbox",name:"Rewind — Pause Pyramid (2–3 rounds, 5 min)",breath:true},
     ]},
   ]},
-  B:{label:"Bridge 4",sub:"Incline · Legs · Back",groups:[
+  B:{label:"Bridge 4",sub:"Pull-Ups · Flat Bench · Legs · Back · Shoulders",groups:[
     {title:"Warm-Up",exercises:[
       {id:"wu_row_b",type:"warmup",name:"Rowing Machine",metrics:[
         {id:"setting",label:"Setting",val:"9",step:1,unit:"",min:1,max:20},
         {id:"duration",label:"Duration",val:"5",step:1,unit:"min",min:1,max:30},
         {id:"distance",label:"Distance",val:"1000",step:50,unit:"m",min:0,max:5000},
       ]},
-      {id:"wu_mobility_b",type:"checkbox",name:"Thoracic Mobility (cat-cow, rotations)"},
+      {id:"wu_mobility_b",type:"checkbox",name:"Mobility (cat-cow, spinal twist, dead hang 20–30 sec × 2, knee hugs)"},
+      {id:"wu_breath_b",type:"checkbox",name:"Breathing Reset — 60 sec (sit upright, hands on lower ribs, inhale nose, exhale slowly, pause)",breath:true},
     ]},
-    {title:"Primary Block",exercises:[
-      {id:"incline",name:"Incline Bench Press",prescription:"3 × 8–10 · 2 min",sets:3,dw:"35",dr:"8",note:"Upper chest stretch at bottom. Squeeze at top.",stepW:2.5,warmupSet:true},
+    {title:"Primary Lifts",exercises:[
+      {id:"pullups",name:"Pull-Ups",prescription:"3 × max · 3 min rest",sets:3,dw:"BW",dr:"8",note:"Exhale on the way up, inhale on the way down. Stop 2 reps before failure on every set. Track total reps across 3 sets. Baseline ~16 total (8–5–3). Weekly target: +1 total rep per session. When you consistently hit 24 total reps, add 1.25–2.5 kg.",noStepW:true,breath:true,
+        abbyNote:"If you catch yourself sighing or yawning between sets — use a swallow, drop the shoulders, and shift attention to the breath out instead."},
+      {id:"flat_bench",name:"Flat Barbell Bench Press",prescription:"3 × 8 · 2.5 min rest",sets:3,dw:"40",dr:"8",note:"Current target: 3×8/42.5 kg across all sets. Do not attempt this on a depleted day.",warmupSet:true,breath:true,
+        abbyNote:"Engage your core instead of flaring at the ribs. Draw your ribs towards your hips. For your exhale pause between sets, try visualising stargazing."},
     ]},
-    {title:"Chest Superset",superset:true,exercises:[
-      {id:"pecfly",name:"Pec Fly",prescription:"3 × 10–12",sets:3,dw:"36",dr:"10",note:"Slight elbow bend throughout. Pause at peak contraction.",stepW:2},
-      {id:"reardelt",name:"Rear Delt Fly",prescription:"3 × 12–15",sets:3,dw:"14",dr:"12",note:"Lead with elbows. Control the return. Scapula retraction.",stepW:1},
+    {title:"Leg Superset 3A/3B",superset:true,exercises:[
+      {id:"leg_press",name:"Leg Press",prescription:"3 × 12",sets:3,dw:"60",dr:"12",note:"Find your working weight in session 1. Start conservatively — this is a new movement in the program. The goal is 3×12 with controlled tempo, not max load."},
+      {id:"leg_curl",name:"Leg Curl",prescription:"3 × 12 · 90 sec",sets:3,dw:"54",dr:"12",note:"Current: 3×12/54 kg. Next target: 3×12/58 kg."},
     ]},
-    {title:"Leg Superset",superset:true,exercises:[
-      {id:"legcurl",name:"Leg Curl",prescription:"3 × 12 · 90 sec",sets:3,dw:"54",dr:"12",note:"3×12 consistently before adding weight.",stepW:2},
-      {id:"legext",name:"Leg Extension",prescription:"3 × 12 · 90 sec",sets:3,dw:"50",dr:"12",note:"Target 3×15 next progression.",stepW:2},
+    {title:"Pulldown + Active Rest",exercises:[
+      {id:"div_pulldown",name:"Diverging Lat Pulldown",prescription:"3 × 10 · 2 min",sets:3,dw:"54",dr:"10",note:"If you feel yourself becoming disproportionately exhausted here, it is because you are chest breathing. Slow down. The weight is secondary. Progression: 54 kg → 58 kg gradually — only when breathing stays controlled.",rehab:true,breath:true,
+        abbyNote:"Highest-risk exercise for chest breathing. Brace core before each rep. Exhale during pull. Inhale through nose on return — lower ribs expanding. If you lose this, stop and reset. Add a small pause at end of exhale between reps."},
+      {id:"alt_leg_ext",name:"Alternating Leg Extension (lying)",prescription:"2 × 10/side · 90 sec",sets:2,dw:"—",dr:"10",note:"Active rest from the pulldown. Progress over weeks: lying → sitting → standing. Keep the breath pattern deliberate throughout.",noStepW:true,breath:true,
+        abbyNote:"1 count inhale, 3–4 count slow exhale per rep. This is diaphragm strengthening, not just core work."},
     ]},
-    {title:"Back Block",exercises:[
-      {id:"dlp_b",name:"Diverging Lat Pulldown",prescription:"3 × 8–10 · 2 min",sets:3,dw:"54",dr:"10",note:"Full stretch at top. 3-sec controlled return.",rehab:true,stepW:2},
-      {id:"facepull_b",name:"Face Pulls",prescription:"3 × 15 · 90 sec",sets:3,dw:"27",dr:"15",note:"Mandatory. External rotation at end range.",rehab:true,stepW:2},
+    {title:"Back",exercises:[
+      {id:"cs_row_b",name:"Chest-Supported DB Row",prescription:"3 × 10 · 90 sec",sets:3,dw:"14",dr:"10",note:"Second pulling movement of the session, lighter than Sun Eater's version. This is upper back health maintenance — not a strength exercise. Keep the weight moderate and focus entirely on scapular retraction and breath.",rehab:true},
+    ]},
+    {title:"Shoulder Superset 6A/6B",superset:true,exercises:[
+      {id:"db_shoulder_press",name:"Seated DB Shoulder Press",prescription:"3 × 8–10",sets:3,dw:"12.5",dr:"8",note:"Progression: 3×8/12.5 kg → push toward 3×10/12.5 kg before moving to 14 kg.",
+        abbyNote:"Drop the shoulders consciously before every single set. Your tendency is to elevate them — this closes off the chest and forces chest breathing immediately."},
+      {id:"plank",name:"Plank",prescription:"2 × 25 sec · 90 sec",sets:2,dw:"—",dr:"25",note:"Active rest from shoulder press. Build toward 40 seconds over 4–6 weeks. If you're holding your breath, shorten the duration.",noStepW:true,breath:true,
+        abbyNote:"Breathe into your lower ribs — don't flatten the breath to hold the position. If you're holding your breath, shorten the duration."},
     ]},
     {title:"Finisher",exercises:[
-      {id:"toebar",name:"Hanging Toe-to-Bar",prescription:"3 × 8–10",sets:3,dw:"—",dr:"8",note:"Knee raises if needed. No kipping.",noStepW:true},
-      {id:"colinjackson",name:"Colin Jackson",prescription:"3 × 10–12",sets:3,dw:"—",dr:"10",note:"Focus on explosive hip drive and core stability.",noStepW:true},
+      {id:"rear_delt",name:"Rear Delt Fly",prescription:"2 × 12 · 60 sec",sets:2,dw:"23",dr:"12",note:"Light load makes this easy to use as a deliberate breathing drill. 1 count inhale, 3–4 count slow exhale. Let the movement reinforce the pattern.",
+        abbyNote:"1 count inhale, 3–4 count slow exhale. Use this movement as a deliberate breathing drill."},
     ]},
     {title:"Rewind",exercises:[
-      {id:"breathe_b",type:"checkbox",name:"Diaphragmatic Breathing (2–15 min)"},
+      {id:"rewind_b",type:"checkbox",name:"Rewind — Self-massage + Softening (5 min)",breath:true},
     ]},
   ]},
   C:{label:"Sylphrena",sub:"Freestyle",groups:[]},
 };
 
-// ── STATE ─────────────────────────────────────────────────
+// ── STATE ─────────────────────────────────────────────────────────────
 let curSess='A',sessStart=null,qIdx=0;
-let setData={};   // exId -> [{w,r,logged}]
-let wuData={};    // exId -> {metrics, done}
-let cbData={};    // exId -> bool
-let cbWarmup={};  // exId -> bool (warmup set checkbox)
-let notes={};     // exId -> string
-let skipped={};   // exId -> bool
-let renames={};   // exId -> string (session-only rename)
-let sessionOrder={}; // groupIdx -> [exIdx order] — session-only reorder
-let customExs=[]; // [{id,name,sets,note,metricType}]
-let checkinText='';
+let setData={},wuData={},cbData={},cbWarmup={},notes={},skipped={},renames={},sessionOrder={},customExs=[],checkinText='';
 let history=[],lastW={},lastR={},lastSessData=null;
 
 function load(){
@@ -495,14 +556,16 @@ function save(){
   try{localStorage.setItem('tlog_lw',JSON.stringify(lastW));}catch(e){}
   try{localStorage.setItem('tlog_lr',JSON.stringify(lastR));}catch(e){}
 }
+function getSeed(key,def){try{const v=localStorage.getItem('tlog_seed_'+key);return v!==null?parseFloat(v):def;}catch(e){return def;}}
+function saveSeed(key,val){try{localStorage.setItem('tlog_seed_'+key,String(val));}catch(e){}}
 
-// ── INIT ─────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────────
 function init(){
   load();
   document.getElementById('headerDate').textContent=
     new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   qIdx=Math.floor(Math.random()*QUOTES.length);
-  renderQuote();loadSeedInputs();updateHomeStats();initSessState('A');renderSessContent();
+  renderQuote();updateHomeStats();initSessState('A');renderSessContent();
   setupLongPress();
 }
 
@@ -516,13 +579,18 @@ function cycleQuote(){
   setTimeout(()=>{qIdx=(qIdx+1)%QUOTES.length;renderQuote();el.style.opacity='1';},200);
 }
 
-// ── HOME STATS ────────────────────────────────────────────
+// ── HOME ──────────────────────────────────────────────────────────────
 function updateBenchTarget(){
-  let best=40;
+  const manualBest=getSeed('benchBest',42.5);
+  let histBest=0;
   history.forEach(h=>{
-    if(h.log&&h.log.bench&&h.log.bench.sets)
-      h.log.bench.sets.forEach(s=>{if(s.logged){const w=parseFloat(s.w)||0;if(w>best)best=w;}});
+    if(!h.log)return;
+    ['flat_bench','bench'].forEach(id=>{
+      if(h.log[id]&&h.log[id].sets)
+        h.log[id].sets.forEach(s=>{if(s.logged){const w=parseFloat(s.w)||0;if(w>histBest)histBest=w;}});
+    });
   });
+  const best=Math.max(manualBest,histBest);
   document.getElementById('btCurrent').textContent=best;
   document.getElementById('btBarFill').style.width=Math.min(100,Math.round((best/50)*100))+'%';
   document.getElementById('btBarL').textContent=best+' kg';
@@ -530,14 +598,58 @@ function updateBenchTarget(){
   const days=Math.ceil((new Date('2025-05-01')-new Date())/(864e5));
   document.getElementById('btDeadline').textContent=days>0?days+' days left':'May 2025';
 }
+
+function editBenchCurrent(){
+  const span=document.getElementById('btCurrent');
+  const cur=span.textContent;
+  const inp=document.createElement('input');
+  inp.type='number';inp.className='bt-current-inp';inp.value=cur;inp.step='0.5';inp.min='0';
+  inp.onclick=e=>e.stopPropagation();
+  inp.onblur=()=>{
+    const v=parseFloat(inp.value);
+    if(!isNaN(v)){saveSeed('benchBest',v);}
+    span.style.display='';inp.replaceWith(span);updateBenchTarget();
+  };
+  inp.onkeydown=e=>{if(e.key==='Enter'||e.key==='Escape')inp.blur();};
+  span.style.display='none';span.parentNode.insertBefore(inp,span);
+  setTimeout(()=>{inp.focus();inp.select();},30);
+}
+
+function editGoalNum(type){
+  const idMap={year:'yearSessions',month:'goalSessions'};
+  const wrapMap={year:'yearNumWrap',month:'monthNumWrap'};
+  const span=document.getElementById(idMap[type]);
+  const cur=span.textContent;
+  const inp=document.createElement('input');
+  inp.type='number';inp.className='goal-num-inp';inp.value=cur;inp.min='0';inp.step='1';
+  inp.onblur=()=>{
+    const v=parseInt(inp.value);
+    if(!isNaN(v)){
+      const now=new Date();
+      const dynCount=type==='year'
+        ?history.filter(h=>new Date(h.date).getFullYear()===now.getFullYear()).length
+        :history.filter(h=>{const d=new Date(h.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).length;
+      saveSeed('seed_'+type,v-dynCount);
+    }
+    updateHomeStats();
+  };
+  inp.onkeydown=e=>{if(e.key==='Enter'||e.key==='Escape')inp.blur();};
+  const wrap=document.getElementById(wrapMap[type]);
+  wrap.innerHTML='';wrap.appendChild(inp);
+  setTimeout(()=>{inp.focus();inp.select();},30);
+}
+
 function updateHomeStats(){
   updateBenchTarget();
   const now=new Date();
-  const YEAR_SEED=getSeed('year',25),MONTH_SEED=getSeed('month',2);
-  const yearCount=history.filter(h=>{const d=new Date(h.date);return d.getFullYear()===now.getFullYear();}).length;
-  const monthCount=history.filter(h=>{const d=new Date(h.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).length;
-  document.getElementById('yearSessions').textContent=YEAR_SEED+yearCount;
-  document.getElementById('goalSessions').textContent=MONTH_SEED+monthCount;
+  const yearDyn=history.filter(h=>new Date(h.date).getFullYear()===now.getFullYear()).length;
+  const monthDyn=history.filter(h=>{const d=new Date(h.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).length;
+  const yearSeed=getSeed('seed_year',25);
+  const monthSeed=getSeed('seed_month',2);
+  const yearEl=document.getElementById('yearSessions');
+  const monthEl=document.getElementById('goalSessions');
+  if(yearEl){yearEl.textContent=yearSeed+yearDyn;}
+  if(monthEl){monthEl.textContent=monthSeed+monthDyn;}
   if(history.length){
     const last=history[0],d=new Date(last.date);
     document.getElementById('lastBody').innerHTML=
@@ -555,7 +667,7 @@ function updateWeightGoal(){
   el.textContent=d>0?'+'+d+' kg to go':'✓ Reached';
 }
 
-// ── NAV ───────────────────────────────────────────────────
+// ── NAV ───────────────────────────────────────────────────────────────
 function showPage(page,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -565,7 +677,7 @@ function showPage(page,btn){
   if(page==='home')updateHomeStats();
 }
 
-// ── SESSION STATE ─────────────────────────────────────────
+// ── SESSION STATE ─────────────────────────────────────────────────────
 function initSessState(s){
   setData={};notes={};wuData={};cbData={};cbWarmup={};skipped={};renames={};sessionOrder={};customExs=[];checkinText='';
   const sess=SESSIONS[s];
@@ -587,9 +699,7 @@ function selectSess(s,btn){
   renderSessContent();
 }
 
-// ── LAST SESSION LOOKUPS ──────────────────────────────────
 function getLastSessSets(exId){
-  // Use canonical (template) id — not renamed
   const prev=history.find(h=>h.session===curSess);
   if(!prev||!prev.log||!prev.log[exId]||!prev.log[exId].sets)return null;
   return prev.log[exId].sets;
@@ -601,27 +711,16 @@ function getLastSessNote(exId){
 }
 function fmtSet(s){
   if(s.w&&s.w!=='—'&&s.w!=='BW'&&s.r&&s.r!=='—')return s.r+' / '+s.w+' kg';
-  if(s.w&&s.w!=='BW'&&s.w!=='—'&&s.metric==='secs')return s.r+' s / '+s.w+' kg';
   if(s.r&&s.r!=='—')return s.r+' reps';
-  if(s.metric==='secs')return s.r+' s';
   return'—';
 }
-function fmtCustomSet(s,metricType){
-  if(metricType==='secs'){
-    if(s.w&&s.w!=='0')return s.r+' s / '+s.w+' kg';
-    return s.r+' s';
-  }
-  if(s.w&&s.w!=='0')return s.r+' reps / '+s.w+' kg';
-  return s.r+' reps';
-}
 
-// ── RENDER SESSION ────────────────────────────────────────
+// ── RENDER SESSION ────────────────────────────────────────────────────
 function getOrderedGroups(){
   const sess=SESSIONS[curSess];
-  // Returns array of {title, superset, exercises} with session-only order applied
   return sess.groups.map((grp,gi)=>{
     const exOrder=sessionOrder[gi]||grp.exercises.map((_,i)=>i);
-    return {...grp, exercises:exOrder.map(i=>grp.exercises[i])};
+    return{...grp,exercises:exOrder.map(i=>grp.exercises[i])};
   });
 }
 
@@ -634,16 +733,13 @@ function renderSessContent(){
     +'<div class="checkin-body"><div class="checkin-prompts">Energy · Sleep · Hunger · Headache · Time of day</div>'
     +'<textarea class="checkin-area" id="checkinArea" placeholder="e.g. Tired, slept 6h, ate well, 17:30…" oninput="saveCheckin()">'+esc(checkinText)+'</textarea>'
     +'</div></div>';
-
   groups.forEach((grp,gi)=>{
     html+='<div class="block-sec"><div class="block-title">'+grp.title+'</div>';
     if(grp.superset){
       html+='<div class="superset-wrap"><div class="superset-tag">Superset — no rest between exercises</div>';
       grp.exercises.forEach(ex=>{html+=renderExAny(ex,gi);});
       html+='</div>';
-    }else{
-      grp.exercises.forEach(ex=>{html+=renderExAny(ex,gi);});
-    }
+    }else{grp.exercises.forEach(ex=>{html+=renderExAny(ex,gi);});}
     html+='</div>';
   });
   if(customExs.length){
@@ -665,30 +761,31 @@ function renderExAny(ex,gi){
 
 function renderWarmup(ex){
   const d=wuData[ex.id]||{metrics:{},done:false};
-  let metricsHtml='';
+  let mHtml='';
   ex.metrics.forEach(m=>{
     const v=d.metrics[m.id]!==undefined?d.metrics[m.id]:m.val;
-    metricsHtml+='<div class="warmup-metric"><div class="warmup-metric-lbl">'+m.label+'</div>'
+    mHtml+='<div class="warmup-metric"><div class="warmup-metric-lbl">'+m.label+'</div>'
       +'<div class="warmup-stepper">'
       +'<button class="warmup-step-btn" onclick="adjWu(\''+ex.id+'\',\''+m.id+'\',-1,'+m.step+','+m.min+','+m.max+',event)">−</button>'
       +'<span class="warmup-step-val" id="wuv_'+ex.id+'_'+m.id+'">'+v+'</span>'
       +'<button class="warmup-step-btn" onclick="adjWu(\''+ex.id+'\',\''+m.id+'\',1,'+m.step+','+m.min+','+m.max+',event)">+</button>'
       +'</div><div class="warmup-metric-unit">'+m.unit+'</div></div>';
   });
-  const tickStyle=d.done?'background:var(--gold);border-color:var(--gold);color:#0a0f18;font-weight:700':'';
-  const tick='<div class="ex-tick" style="'+tickStyle+'">'+(d.done?'✓':'')+'</div>';
+  const ts=d.done?'background:var(--gold);border-color:var(--gold);color:#0a0f18;font-weight:700':'';
+  const tick='<div class="ex-tick" style="'+ts+'">'+(d.done?'✓':'')+'</div>';
   return '<div class="warmup-card'+(d.done?' done':'')+'" id="wu_'+ex.id+'">'
     +'<div class="warmup-head">'+tick+'<div class="warmup-title">'+ex.name+'</div></div>'
-    +'<div class="warmup-body"><div class="warmup-metrics">'+metricsHtml+'</div>'
+    +'<div class="warmup-body"><div class="warmup-metrics">'+mHtml+'</div>'
     +'<button class="warmup-done-btn'+(d.done?' done-state':'')+'" onclick="toggleWu(\''+ex.id+'\')">'+(d.done?'✓ Done':'Mark Done')+'</button>'
     +'</div></div>';
 }
 
 function renderCheckbox(ex){
   const checked=cbData[ex.id]||false;
+  const breathTag=ex.breath?'<span class="ex-tag-breath" style="margin-left:8px">Breath</span>':'';
   return '<div class="checkbox-row'+(checked?' checked':'')+'" onclick="toggleCb(\''+ex.id+'\')" id="cb_'+ex.id+'">'
     +'<div class="cb-box">'+(checked?'✓':'')+'</div>'
-    +'<div class="cb-label">'+ex.name+'</div>'
+    +'<div class="cb-label">'+ex.name+breathTag+'</div>'
     +'</div>';
 }
 
@@ -701,10 +798,9 @@ function renderEx(ex,gi){
   const isRenamed=!!renames[ex.id];
 
   let summaryHtml='';
-  if(isSkipped)summaryHtml='<div class="skipped-badge">Skipped</div>';
+  if(isSkipped)summaryHtml='<span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:rgba(90,116,148,0.12);border:1px solid var(--skipped-border);padding:2px 8px;border-radius:10px">Skipped</span>';
   else if(loggedCount>0)summaryHtml='<div class="ex-summary">'+loggedCount+'/'+ex.sets+'</div>';
 
-  // Last session (uses canonical id)
   const lastSets=getLastSessSets(ex.id);
   let lastSetsHtml='';
   if(lastSets&&lastSets.length){
@@ -714,55 +810,62 @@ function renderEx(ex,gi){
   const lastNote=getLastSessNote(ex.id);
   const lastNoteHtml=lastNote?'<div class="last-note-block">Last session note: '+esc(lastNote)+'</div>':'';
 
-  // Warmup set checkbox
   let warmupSetHtml='';
   if(ex.warmupSet){
     const wuChecked=cbWarmup[ex.id]||false;
     warmupSetHtml='<div class="warmup-set-row">'
-      +'<div class="cb-box" style="border-radius:3px;cursor:pointer;'+(wuChecked?'background:var(--gold);border-color:var(--gold);color:#0a0f18;font-weight:700':'')+'" onclick="toggleWarmupSet(\''+ex.id+'\')">'+(wuChecked?'✓':'')+'</div>'
+      +'<div class="cb-box" style="border-radius:3px;cursor:pointer;flex-shrink:0;'+(wuChecked?'background:var(--gold);border-color:var(--gold);color:#0a0f18;font-weight:700':'')+'" onclick="toggleWarmupSet(\''+ex.id+'\')">'+(wuChecked?'✓':'')+'</div>'
       +'<span class="warmup-set-lbl">Warm-up set</span>'
       +'<span class="warmup-set-weight">20 kg — barbell only</span>'
       +'</div>';
   }
 
-  // Working sets
+  let abbyHtml='';
+  if(ex.abbyNote){
+    abbyHtml='<div class="abby-note"><strong>Abby</strong>'+esc(ex.abbyNote)+'</div>';
+  }
+
   let setsHtml='<div class="sets-title">Working sets</div><div class="sets-list">';
   sd.forEach((s,i)=>{setsHtml+=renderSetRow(ex,i,s);});
   setsHtml+='</div>';
 
   const curNote=notes[ex.id]||'';
   const noteHtml='<div class="note-lbl">Notes</div><textarea class="note-area" id="note_'+ex.id+'" placeholder="Add a note…" oninput="saveNote(\''+ex.id+'\')">'+esc(curNote)+'</textarea>';
-  const coachHtml='<div class="coach-note">'+ex.note+'</div>';
+  const coachHtml=ex.note?'<div class="coach-note">'+ex.note+'</div>':'';
+
+  let tags='';
+  if(ex.rehab)tags+='<span class="ex-tag-rehab">Rehab</span>';
+  if(ex.breath)tags+='<span class="ex-tag-breath">Breath</span>';
+
+  const skipToggle='<button class="skip-toggle" onclick="toggleSkip(\''+ex.id+'\',event)">'+(isSkipped?'↩':'Skip')+'</button>';
 
   let cardClass='ex-card';
   if(done)cardClass+=' done';
   if(isSkipped)cardClass+=' skipped';
 
-  // Name element — supports inline rename
-  const nameHtml='<span class="ex-name'+(isRenamed?' ex-name-renamed':'')+'" id="exname_'+ex.id+'" data-exid="'+ex.id+'">'+esc(displayName)+'</span>';
+  const nameHtml='<span class="ex-name'+(isRenamed?' ex-name-renamed':'')+'" id="exname_'+ex.id+'">'+esc(displayName)+'</span>';
 
   return '<div class="'+cardClass+'" id="ec_'+ex.id+'">'
-    +'<div class="ex-head ex-head-tap" onclick="toggleExHead(\''+ex.id+'\')">'
-    +'<div class="ex-tick">'+(done?'✓':isSkipped?'–':'')+'</div>'
-    +'<div class="ex-meta">'+nameHtml+(ex.prescription?'<div class="ex-presc">'+ex.prescription+'</div>':'')+'</div>'
-    +(ex.rehab?'<span class="ex-tag-rehab">Rehab</span>':'')
-    +summaryHtml+'</div>'
-    +(isSkipped?'':'<div class="ex-body">'+lastSetsHtml+lastNoteHtml+warmupSetHtml+setsHtml+noteHtml+coachHtml+'</div>')
+    +'<div class="ex-head">'
+    +'<div class="ex-tick" onclick="'+(isSkipped?'toggleSkip(\''+ex.id+'\',event)':'toggleExHead(\''+ex.id+'\')')+'">'+( done?'✓':isSkipped?'✕':'')+'</div>'
+    +'<div class="ex-meta" onclick="toggleExHead(\''+ex.id+'\')">'
+    +nameHtml+(ex.prescription?'<div class="ex-presc">'+ex.prescription+'</div>':'')+'</div>'
+    +(tags?'<div class="ex-tags">'+tags+'</div>':'')
+    +summaryHtml
+    +skipToggle
+    +'</div>'
+    +(isSkipped?'':'<div class="ex-body">'+lastSetsHtml+lastNoteHtml+warmupSetHtml+abbyHtml+setsHtml+noteHtml+coachHtml+'</div>')
     +'</div>';
-}
-
-function toggleWarmupSet(exId){
-  cbWarmup[exId]=!cbWarmup[exId];refreshEx(exId);
 }
 
 function renderSetRow(ex,i,s){
   const canW=!ex.noStep&&!ex.noStepW&&s.w!=='—'&&s.w!=='BW';
   const canR=!ex.noStep&&s.r!=='—';
   const rCtrl=canR
-    ?'<div class="set-step-group"><button class="set-step-btn" onclick="adjSet(\''+ex.id+'\','+i+',\'r\',-1,event)">−</button><span class="set-step-val" id="sv_r_'+ex.id+'_'+i+'">'+s.r+'</span><button class="set-step-btn" onclick="adjSet(\''+ex.id+'\','+i+',\'r\',1,event)">+</button></div><span class="set-step-unit">reps</span>'
+    ?'<div class="set-step-group"><button class="set-step-btn" onclick="adjSet(\''+ex.id+'\','+i+',\'r\',-1,event)">−</button><span class="set-step-val" id="sv_r_'+ex.id+'_'+i+'" onclick="openInlineEdit(\'sv_r_'+ex.id+'_'+i+'\',\'r\',event)">'+s.r+'</span><button class="set-step-btn" onclick="adjSet(\''+ex.id+'\','+i+',\'r\',1,event)">+</button></div><span class="set-step-unit">reps</span>'
     :'<span style="font-size:13px;color:var(--muted);padding:0 5px">'+s.r+'</span>';
   const wCtrl=canW
-    ?'<div class="set-step-group"><button class="set-step-btn" onclick="adjSet(\''+ex.id+'\','+i+',\'w\',-1,event)">−</button><span class="set-step-val" id="sv_w_'+ex.id+'_'+i+'">'+s.w+'</span><button class="set-step-btn" onclick="adjSet(\''+ex.id+'\','+i+',\'w\',1,event)">+</button></div><span class="set-step-unit">kg</span>'
+    ?'<div class="set-step-group"><button class="set-step-btn" onclick="adjSet(\''+ex.id+'\','+i+',\'w\',-1,event)">−</button><span class="set-step-val" id="sv_w_'+ex.id+'_'+i+'" onclick="openInlineEdit(\'sv_w_'+ex.id+'_'+i+'\',\'w\',event)">'+s.w+'</span><button class="set-step-btn" onclick="adjSet(\''+ex.id+'\','+i+',\'w\',1,event)">+</button></div><span class="set-step-unit">kg</span>'
     :'<span style="font-size:13px;color:var(--muted);padding:0 5px">'+s.w+'</span>';
   const logBtn=s.logged
     ?'<button class="set-log-btn" onclick="unlogSet(\''+ex.id+'\','+i+',event)">✓</button>'
@@ -773,137 +876,25 @@ function renderSetRow(ex,i,s){
     +logBtn+'</div>';
 }
 
-// ── LONG PRESS & CONTEXT MENU ─────────────────────────────
-let longPressTimer=null,ctxTarget=null;
-
-function setupLongPress(){
-  document.addEventListener('touchstart',onTouchStart,{passive:true});
-  document.addEventListener('touchend',onTouchEnd,{passive:true});
-  document.addEventListener('touchmove',onTouchMove,{passive:true});
-  document.addEventListener('mousedown',onMouseDown);
-  document.addEventListener('mouseup',onMouseUp);
-}
-
-let lpStartX=0,lpStartY=0,lpMoved=false;
-function onTouchStart(e){
-  lpStartX=e.touches[0].clientX;lpStartY=e.touches[0].clientY;lpMoved=false;
-  startLongPress(e.touches[0].clientX,e.touches[0].clientY,e.target);
-}
-function onTouchMove(e){
-  const dx=e.touches[0].clientX-lpStartX,dy=e.touches[0].clientY-lpStartY;
-  if(Math.abs(dx)>8||Math.abs(dy)>8){lpMoved=true;cancelLongPress();}
-}
-function onTouchEnd(){cancelLongPress();}
-function onMouseDown(e){if(e.button===0)startLongPress(e.clientX,e.clientY,e.target);}
-function onMouseUp(){cancelLongPress();}
-
-function startLongPress(x,y,target){
-  cancelLongPress();
-  const exCard=target.closest('.ex-card[id^="ec_"]');
-  if(!exCard)return;
-  longPressTimer=setTimeout(()=>{
-    if(lpMoved)return;
-    const exId=exCard.id.replace('ec_','');
-    const ex=findEx(exId);
-    if(!ex)return;
-    ctxTarget={exId,x,y,exCard};
-    showCtxMenu(ex,exId,x,y,exCard);
-  },500);
-}
-function cancelLongPress(){if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}}
-
-function showCtxMenu(ex,exId,x,y,exCard){
-  const menu=document.getElementById('ctxMenu');
-  const overlay=document.getElementById('ctxOverlay');
-  const isSkippedNow=!!skipped[exId];
-  const grpInfo=getExGroupInfo(exId);
-
-  let items='';
-  // Skip / unskip
-  if(isSkippedNow){
-    items+='<div class="ctx-item" onclick="ctxUnskip()">↩ Restore Exercise</div>';
-  }else{
-    items+='<div class="ctx-item danger" onclick="ctxSkip()">⊘ Skip Exercise</div>';
-  }
-  items+='<div class="ctx-sep"></div>';
-  // Rename
-  items+='<div class="ctx-item" onclick="ctxRename()">✎ Rename (this session)</div>';
-  items+='<div class="ctx-sep"></div>';
-  // Move up/down within group
-  if(grpInfo){
-    if(grpInfo.posInGroup>0)items+='<div class="ctx-item" onclick="ctxMove(-1)">↑ Move Up</div>';
-    if(grpInfo.posInGroup<grpInfo.groupSize-1)items+='<div class="ctx-item" onclick="ctxMove(1)">↓ Move Down</div>';
-  }
-
-  menu.innerHTML=items;
-  overlay.style.display='block';
-
-  // Position menu
-  const menuW=190,menuH=menu.children.length*42;
-  let mx=Math.min(x,window.innerWidth-menuW-12);
-  let my=Math.min(y,window.innerHeight-menuH-12);
-  menu.style.left=mx+'px';menu.style.top=my+'px';
-  menu.style.display='block';
-}
-function closeCtx(){
-  document.getElementById('ctxMenu').style.display='none';
-  document.getElementById('ctxOverlay').style.display='none';
-  ctxTarget=null;
-}
-function ctxSkip(){if(!ctxTarget)return;skipped[ctxTarget.exId]=true;closeCtx();refreshEx(ctxTarget.exId);}
-function toggleSkip(exId,e){
+// ── INLINE EDIT ───────────────────────────────────────────────────────
+function openInlineEdit(spanId,type,e){
   e.stopPropagation();
-  skipped[exId]=!skipped[exId];
-  refreshEx(exId);
-}
-function ctxUnskip(){if(!ctxTarget)return;skipped[ctxTarget.exId]=false;closeCtx();refreshEx(ctxTarget.exId);}
-function ctxRename(){
-  if(!ctxTarget)return;
-  const {exId}=ctxTarget;closeCtx();
-  const nameEl=document.getElementById('exname_'+exId);
-  if(!nameEl)return;
-  const current=renames[exId]||findEx(exId).name;
-  nameEl.innerHTML='<input class="rename-input" id="ri_'+exId+'" value="'+esc(current)+'" onclick="event.stopPropagation()" onkeydown="renameKey(event,\''+exId+'\')">';
-  setTimeout(()=>{const inp=document.getElementById('ri_'+exId);if(inp){inp.focus();inp.select();}},50);
-}
-function renameKey(e,exId){
-  if(e.key==='Enter'){commitRename(exId);}
-  if(e.key==='Escape'){renames[exId]=null;refreshEx(exId);}
-}
-function commitRename(exId){
-  const inp=document.getElementById('ri_'+exId);
-  if(!inp)return;
-  const val=inp.value.trim();
-  if(val&&val!==findEx(exId).name)renames[exId]=val;
-  else renames[exId]=null;
-  refreshEx(exId);
+  const span=document.getElementById(spanId);if(!span)return;
+  const cur=span.textContent;
+  const inp=document.createElement('input');
+  inp.type='number';inp.className='set-step-inp';inp.value=cur;inp.step=type==='w'?'0.5':'1';inp.min='0';
+  inp.onclick=ev=>ev.stopPropagation();
+  inp.onblur=()=>{
+    const v=parseFloat(inp.value);
+    span.textContent=isNaN(v)?cur:(Number.isInteger(v)?String(v):v.toFixed(1));
+    span.style.display='';inp.replaceWith(span);
+  };
+  inp.onkeydown=ev=>{if(ev.key==='Enter'||ev.key==='Escape')inp.blur();};
+  span.style.display='none';span.parentNode.insertBefore(inp,span);
+  setTimeout(()=>{inp.focus();inp.select();},30);
 }
 
-function getExGroupInfo(exId){
-  const sess=SESSIONS[curSess];
-  for(let gi=0;gi<sess.groups.length;gi++){
-    const grp=sess.groups[gi];
-    const order=sessionOrder[gi]||grp.exercises.map((_,i)=>i);
-    const pos=order.findIndex(oi=>grp.exercises[oi].id===exId);
-    if(pos>=0)return{gi,pos,posInGroup:pos,groupSize:order.length};
-  }
-  return null;
-}
-function ctxMove(dir){
-  if(!ctxTarget)return;
-  const info=getExGroupInfo(ctxTarget.exId);
-  if(!info)return;
-  const {gi,pos}=info;
-  const grp=SESSIONS[curSess].groups[gi];
-  if(!sessionOrder[gi])sessionOrder[gi]=grp.exercises.map((_,i)=>i);
-  const order=sessionOrder[gi];
-  const newPos=pos+dir;
-  if(newPos<0||newPos>=order.length)return;
-  [order[pos],order[newPos]]=[order[newPos],order[pos]];
-  closeCtx();renderSessContent();
-}
-
-// ── EXERCISE INTERACTIONS ─────────────────────────────────
+// ── EXERCISE INTERACTIONS ─────────────────────────────────────────────
 function adjWu(exId,mId,dir,step,min,max,e){
   e.stopPropagation();const d=wuData[exId];if(!d)return;
   let v=parseFloat(d.metrics[mId])||0;
@@ -923,12 +914,13 @@ function toggleCb(exId){
   const ex=findEx(exId);if(!ex)return;
   const tmp=document.createElement('div');tmp.innerHTML=renderCheckbox(ex);el.replaceWith(tmp.firstElementChild);
 }
+function toggleWarmupSet(exId){cbWarmup[exId]=!cbWarmup[exId];refreshEx(exId);}
+function toggleSkip(exId,e){e.stopPropagation();skipped[exId]=!skipped[exId];refreshEx(exId);}
 function adjSet(exId,i,type,dir,e){
   e.stopPropagation();if(!setData[exId])return;
   const s=setData[exId][i];const ex=findEx(exId);if(!ex)return;
   if(type==='w'){
-    const step=ex.stepW||2.5;let v=parseFloat(s.w)||0;
-    v=Math.max(0,Math.round((v+dir*step)/step)*step);
+    let v=parseFloat(s.w)||0;v=Math.max(0,v+dir);
     s.w=Number.isInteger(v)?String(v):v.toFixed(1);
     const el=document.getElementById('sv_w_'+exId+'_'+i);if(el)el.textContent=s.w;
   }else{
@@ -973,12 +965,92 @@ function findEx(id){
   return found;
 }
 
-// ── CUSTOM EXERCISES ──────────────────────────────────────
+// ── LONG PRESS (rename/reorder) ───────────────────────────────────────
+let longPressTimer=null,ctxTarget=null,lpStartX=0,lpStartY=0,lpMoved=false;
+function setupLongPress(){
+  document.addEventListener('touchstart',onTS,{passive:true});
+  document.addEventListener('touchend',onTE,{passive:true});
+  document.addEventListener('touchmove',onTM,{passive:true});
+  document.addEventListener('mousedown',onMD);
+  document.addEventListener('mouseup',onMU);
+}
+function onTS(e){lpStartX=e.touches[0].clientX;lpStartY=e.touches[0].clientY;lpMoved=false;startLP(e.touches[0].clientX,e.touches[0].clientY,e.target);}
+function onTM(e){const dx=e.touches[0].clientX-lpStartX,dy=e.touches[0].clientY-lpStartY;if(Math.abs(dx)>8||Math.abs(dy)>8){lpMoved=true;cancelLP();}}
+function onTE(){cancelLP();}
+function onMD(e){if(e.button===0)startLP(e.clientX,e.clientY,e.target);}
+function onMU(){cancelLP();}
+function startLP(x,y,target){
+  cancelLP();
+  const exCard=target.closest('.ex-card[id^="ec_"]');
+  if(!exCard)return;
+  longPressTimer=setTimeout(()=>{
+    if(lpMoved)return;
+    const exId=exCard.id.replace('ec_','');
+    const ex=findEx(exId);if(!ex)return;
+    ctxTarget={exId,x,y};showCtxMenu(ex,exId,x,y);
+  },500);
+}
+function cancelLP(){if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}}
+function showCtxMenu(ex,exId,x,y){
+  const menu=document.getElementById('ctxMenu');
+  const overlay=document.getElementById('ctxOverlay');
+  const grpInfo=getExGroupInfo(exId);
+  let items='<div class="ctx-item" onclick="ctxRename()">✎ Rename (this session)</div>';
+  items+='<div class="ctx-sep"></div>';
+  if(grpInfo){
+    if(grpInfo.posInGroup>0)items+='<div class="ctx-item" onclick="ctxMove(-1)">↑ Move Up</div>';
+    if(grpInfo.posInGroup<grpInfo.groupSize-1)items+='<div class="ctx-item" onclick="ctxMove(1)">↓ Move Down</div>';
+  }
+  menu.innerHTML=items;
+  overlay.style.display='block';
+  const menuW=190,menuH=menu.children.length*42;
+  menu.style.left=Math.min(x,window.innerWidth-menuW-12)+'px';
+  menu.style.top=Math.min(y,window.innerHeight-menuH-12)+'px';
+  menu.style.display='block';
+}
+function closeCtx(){document.getElementById('ctxMenu').style.display='none';document.getElementById('ctxOverlay').style.display='none';ctxTarget=null;}
+function ctxRename(){
+  if(!ctxTarget)return;
+  const{exId}=ctxTarget;closeCtx();
+  const nameEl=document.getElementById('exname_'+exId);if(!nameEl)return;
+  const current=renames[exId]||findEx(exId).name;
+  nameEl.innerHTML='<input class="rename-input" id="ri_'+exId+'" value="'+esc(current)+'" onclick="event.stopPropagation()" onkeydown="renameKey(event,\''+exId+'\')">';
+  setTimeout(()=>{const inp=document.getElementById('ri_'+exId);if(inp){inp.focus();inp.select();}},50);
+}
+function renameKey(e,exId){if(e.key==='Enter')commitRename(exId);if(e.key==='Escape'){renames[exId]=null;refreshEx(exId);}}
+function commitRename(exId){
+  const inp=document.getElementById('ri_'+exId);if(!inp)return;
+  const val=inp.value.trim();
+  renames[exId]=val&&val!==findEx(exId).name?val:null;
+  refreshEx(exId);
+}
+function getExGroupInfo(exId){
+  const sess=SESSIONS[curSess];
+  for(let gi=0;gi<sess.groups.length;gi++){
+    const grp=sess.groups[gi];
+    const order=sessionOrder[gi]||grp.exercises.map((_,i)=>i);
+    const pos=order.findIndex(oi=>grp.exercises[oi].id===exId);
+    if(pos>=0)return{gi,pos,posInGroup:pos,groupSize:order.length};
+  }
+  return null;
+}
+function ctxMove(dir){
+  if(!ctxTarget)return;
+  const info=getExGroupInfo(ctxTarget.exId);if(!info)return;
+  const{gi,pos}=info;const grp=SESSIONS[curSess].groups[gi];
+  if(!sessionOrder[gi])sessionOrder[gi]=grp.exercises.map((_,i)=>i);
+  const order=sessionOrder[gi];const newPos=pos+dir;
+  if(newPos<0||newPos>=order.length)return;
+  [order[pos],order[newPos]]=[order[newPos],order[pos]];
+  closeCtx();renderSessContent();
+}
+
+// ── CUSTOM EXERCISES ──────────────────────────────────────────────────
 let customIdCounter=0,formSets=[],formMetricType='reps';
 function showCustomForm(){
   const area=document.getElementById('customFormArea');if(!area)return;
   formSets=[{w:'0',r:'0'}];formMetricType='reps';
-  area.innerHTML='<div class="custom-form" id="customForm">'
+  area.innerHTML='<div class="custom-form">'
     +'<div class="custom-form-title">New Exercise</div>'
     +'<input class="custom-name-inp" id="customNameInp" placeholder="Exercise name…" autocomplete="off">'
     +'<div class="metric-toggle">'
@@ -1003,24 +1075,20 @@ function addFormSet(){const last=formSets.length>0?formSets[formSets.length-1]:{
 function renderFormSets(){
   const el=document.getElementById('customFormSets');if(!el)return;
   const isSecs=formMetricType==='secs';
-  el.innerHTML=formSets.map((s,i)=>{
-    const rUnit=isSecs?'sec':'reps';
-    return '<div class="set-row" style="margin-bottom:6px">'
-      +'<span class="set-num">S'+(i+1)+'</span>'
-      +'<div class="set-stepper">'
-      +'<div class="set-step-group"><button class="set-step-btn" onclick="adjFormSet('+i+',\'r\',-1)">−</button><span id="fs_r_'+i+'" class="set-step-val">'+s.r+'</span><button class="set-step-btn" onclick="adjFormSet('+i+',\'r\',1)">+</button></div>'
-      +'<span class="set-step-unit">'+rUnit+'</span>'
-      +(isSecs?'':('<span class="set-sep">/</span>'
-        +'<div class="set-step-group"><button class="set-step-btn" onclick="adjFormSet('+i+',\'w\',-1)">−</button><span id="fs_w_'+i+'" class="set-step-val">'+s.w+'</span><button class="set-step-btn" onclick="adjFormSet('+i+',\'w\',1)">+</button></div>'
-        +'<span class="set-step-unit">kg</span>'))
-      +'</div></div>';
-  }).join('');
+  el.innerHTML=formSets.map((s,i)=>
+    '<div class="set-row" style="margin-bottom:6px">'
+    +'<span class="set-num">S'+(i+1)+'</span>'
+    +'<div class="set-stepper">'
+    +'<div class="set-step-group"><button class="set-step-btn" onclick="adjFormSet('+i+',\'r\',-1)">−</button><span id="fs_r_'+i+'" class="set-step-val">'+s.r+'</span><button class="set-step-btn" onclick="adjFormSet('+i+',\'r\',1)">+</button></div>'
+    +'<span class="set-step-unit">'+(isSecs?'sec':'reps')+'</span>'
+    +(isSecs?'':('<span class="set-sep">/</span><div class="set-step-group"><button class="set-step-btn" onclick="adjFormSet('+i+',\'w\',-1)">−</button><span id="fs_w_'+i+'" class="set-step-val">'+s.w+'</span><button class="set-step-btn" onclick="adjFormSet('+i+',\'w\',1)">+</button></div><span class="set-step-unit">kg</span>'))
+    +'</div></div>'
+  ).join('');
 }
 function adjFormSet(i,type,dir){
-  if(type==='w'){let v=parseFloat(formSets[i].w)||0;v=Math.max(0,Math.round((v+dir*2.5)/2.5)*2.5);formSets[i].w=Number.isInteger(v)?String(v):v.toFixed(1);}
+  if(type==='w'){let v=parseFloat(formSets[i].w)||0;v=Math.max(0,v+dir);formSets[i].w=Number.isInteger(v)?String(v):v.toFixed(1);}
   else{let v=parseInt(formSets[i].r)||0;v=Math.max(0,v+dir);formSets[i].r=String(v);}
-  const el=document.getElementById(type==='w'?'fs_w_'+i:'fs_r_'+i);
-  if(el)el.textContent=type==='w'?formSets[i].w:formSets[i].r;
+  const el=document.getElementById(type==='w'?'fs_w_'+i:'fs_r_'+i);if(el)el.textContent=type==='w'?formSets[i].w:formSets[i].r;
 }
 function saveCustomEx(){
   const nameEl=document.getElementById('customNameInp');
@@ -1030,173 +1098,83 @@ function saveCustomEx(){
   formSets=[];cancelCustomForm();renderSessContent();
 }
 function cancelCustomForm(){formSets=[];const a=document.getElementById('customFormArea');if(a)a.innerHTML='';}
-
 function renderCustomEx(cx){
   const isSecs=cx.metricType==='secs';
   const done=cx.sets.length>0&&cx.sets.every(s=>s.logged);
   const loggedCount=cx.sets.filter(s=>s.logged).length;
   let setsHtml='<div class="sets-title">Sets</div><div class="sets-list">';
   cx.sets.forEach((s,i)=>{
-    const rUnit=isSecs?'sec':'reps';
-    const rCtrl='<div class="set-step-group"><button class="set-step-btn" onclick="adjCustomSet(\''+cx.id+'\','+i+',\'r\',-1,event)">−</button><span class="set-step-val" id="csv_r_'+cx.id+'_'+i+'">'+s.r+'</span><button class="set-step-btn" onclick="adjCustomSet(\''+cx.id+'\','+i+',\'r\',1,event)">+</button></div><span class="set-step-unit">'+rUnit+'</span>';
+    const rCtrl='<div class="set-step-group"><button class="set-step-btn" onclick="adjCustomSet(\''+cx.id+'\','+i+',\'r\',-1,event)">−</button><span class="set-step-val" id="csv_r_'+cx.id+'_'+i+'">'+s.r+'</span><button class="set-step-btn" onclick="adjCustomSet(\''+cx.id+'\','+i+',\'r\',1,event)">+</button></div><span class="set-step-unit">'+(isSecs?'sec':'reps')+'</span>';
     const wCtrl=isSecs?'':'<span class="set-sep">/</span><div class="set-step-group"><button class="set-step-btn" onclick="adjCustomSet(\''+cx.id+'\','+i+',\'w\',-1,event)">−</button><span class="set-step-val" id="csv_w_'+cx.id+'_'+i+'">'+s.w+'</span><button class="set-step-btn" onclick="adjCustomSet(\''+cx.id+'\','+i+',\'w\',1,event)">+</button></div><span class="set-step-unit">kg</span>';
-    const logBtn=s.logged
-      ?'<button class="set-log-btn" onclick="unlogCustomSet(\''+cx.id+'\','+i+',event)">✓</button>'
-      :'<button class="set-log-btn" onclick="logCustomSet(\''+cx.id+'\','+i+',event)">Log</button>';
+    const logBtn=s.logged?'<button class="set-log-btn" onclick="unlogCustomSet(\''+cx.id+'\','+i+',event)">✓</button>':'<button class="set-log-btn" onclick="logCustomSet(\''+cx.id+'\','+i+',event)">Log</button>';
     setsHtml+='<div class="set-row'+(s.logged?' set-logged':'')+'">'
       +'<span class="set-num">S'+(i+1)+'</span>'
-      +'<div class="set-stepper">'+rCtrl+wCtrl+'</div>'
-      +logBtn+'</div>';
+      +'<div class="set-stepper">'+rCtrl+wCtrl+'</div>'+logBtn+'</div>';
   });
-  setsHtml+='</div>';
-  setsHtml+='<button class="add-set-btn" onclick="addCustomSet(\''+cx.id+'\')">+ Add Set</button>';
+  setsHtml+='</div><button class="add-set-btn" onclick="addCustomSet(\''+cx.id+'\')">+ Add Set</button>';
   const noteHtml='<div class="note-lbl">Notes</div><textarea class="note-area" id="cnote_'+cx.id+'" placeholder="Add a note…" oninput="saveCustomNote(\''+cx.id+'\')">'+esc(cx.note||'')+'</textarea>';
   return '<div class="ex-card'+(done?' done':'')+'" id="cec_'+cx.id+'">'
     +'<div class="ex-head" style="cursor:default">'
     +'<div class="ex-tick">'+(done?'✓':'')+'</div>'
-    +'<div class="ex-meta"><div class="ex-name">'+cx.name+'</div><div class="ex-presc">Custom · '+(cx.metricType==='secs'?'Duration':'Reps × Weight')+'</div></div>'
+    +'<div class="ex-meta"><div class="ex-name">'+cx.name+'</div><div class="ex-presc">Custom · '+(isSecs?'Seconds':'Reps × Weight')+'</div></div>'
     +(loggedCount>0?'<div class="ex-summary">'+loggedCount+'/'+cx.sets.length+'</div>':'')
     +'</div><div class="ex-body">'+setsHtml+noteHtml+'</div></div>';
 }
 function saveCustomNote(id){const cx=customExs.find(c=>c.id===id);if(cx){const el=document.getElementById('cnote_'+id);if(el)cx.note=el.value;}}
-function addCustomSet(cxId){
-  const cx=customExs.find(c=>c.id===cxId);if(!cx)return;
-  const last=cx.sets.length>0?cx.sets[cx.sets.length-1]:{w:'0',r:'0'};
-  cx.sets.push({w:last.w,r:last.r,logged:false});renderSessContent();
-}
-function adjCustomSet(cxId,i,type,dir,e){
-  e.stopPropagation();const cx=customExs.find(c=>c.id===cxId);if(!cx||!cx.sets[i])return;
-  if(type==='w'){let v=parseFloat(cx.sets[i].w)||0;v=Math.max(0,Math.round((v+dir*2.5)/2.5)*2.5);cx.sets[i].w=Number.isInteger(v)?String(v):v.toFixed(1);}
-  else{let v=parseInt(cx.sets[i].r)||0;v=Math.max(0,v+dir);cx.sets[i].r=String(v);}
-  const el=document.getElementById(type==='w'?'csv_w_'+cxId+'_'+i:'csv_r_'+cxId+'_'+i);
-  if(el)el.textContent=type==='w'?cx.sets[i].w:cx.sets[i].r;
-}
-function logCustomSet(cxId,i,e){
-  e.stopPropagation();const cx=customExs.find(c=>c.id===cxId);if(!cx||!cx.sets[i])return;
-  const wEl=document.getElementById('csv_w_'+cxId+'_'+i);const rEl=document.getElementById('csv_r_'+cxId+'_'+i);
-  if(wEl)cx.sets[i].w=wEl.textContent;if(rEl)cx.sets[i].r=rEl.textContent;
-  cx.sets[i].logged=true;
-  for(let j=i+1;j<cx.sets.length;j++){if(!cx.sets[j].logged){cx.sets[j].w=cx.sets[i].w;cx.sets[j].r=cx.sets[i].r;}}
-  renderSessContent();
-}
-function unlogCustomSet(cxId,i,e){
-  e.stopPropagation();const cx=customExs.find(c=>c.id===cxId);if(!cx||!cx.sets[i])return;
-  cx.sets[i].logged=false;renderSessContent();
-}
+function addCustomSet(cxId){const cx=customExs.find(c=>c.id===cxId);if(!cx)return;const last=cx.sets.length>0?cx.sets[cx.sets.length-1]:{w:'0',r:'0'};cx.sets.push({w:last.w,r:last.r,logged:false});renderSessContent();}
+function adjCustomSet(cxId,i,type,dir,e){e.stopPropagation();const cx=customExs.find(c=>c.id===cxId);if(!cx||!cx.sets[i])return;if(type==='w'){let v=parseFloat(cx.sets[i].w)||0;v=Math.max(0,v+dir);cx.sets[i].w=Number.isInteger(v)?String(v):v.toFixed(1);}else{let v=parseInt(cx.sets[i].r)||0;v=Math.max(0,v+dir);cx.sets[i].r=String(v);}const el=document.getElementById(type==='w'?'csv_w_'+cxId+'_'+i:'csv_r_'+cxId+'_'+i);if(el)el.textContent=type==='w'?cx.sets[i].w:cx.sets[i].r;}
+function logCustomSet(cxId,i,e){e.stopPropagation();const cx=customExs.find(c=>c.id===cxId);if(!cx||!cx.sets[i])return;const wEl=document.getElementById('csv_w_'+cxId+'_'+i);const rEl=document.getElementById('csv_r_'+cxId+'_'+i);if(wEl)cx.sets[i].w=wEl.textContent;if(rEl)cx.sets[i].r=rEl.textContent;cx.sets[i].logged=true;for(let j=i+1;j<cx.sets.length;j++){if(!cx.sets[j].logged){cx.sets[j].w=cx.sets[i].w;cx.sets[j].r=cx.sets[i].r;}}renderSessContent();}
+function unlogCustomSet(cxId,i,e){e.stopPropagation();const cx=customExs.find(c=>c.id===cxId);if(!cx||!cx.sets[i])return;cx.sets[i].logged=false;renderSessContent();}
 
-// ── FINISH SESSION ────────────────────────────────────────
-function finishSess(){
+// ── FINISH ────────────────────────────────────────────────────────────
+function confirmFinish(){
+  const sess=SESSIONS[curSess];let total=0,logged=0;
+  sess.groups.forEach(g=>g.exercises.forEach(ex=>{
+    if(ex.type==='warmup'||ex.type==='checkbox')return;
+    total++;const sd=setData[ex.id]||[];
+    if(sd.length>0&&sd.every(s=>s.logged))logged++;
+  }));
+  const pct=total>0?Math.round((logged/total)*100):0;
+  document.getElementById('confirmSummary').textContent=logged+' of '+total+' exercises completed ('+pct+'%)';
+  document.getElementById('confirmModal').classList.add('show');
+}
+function closeConfirm(){document.getElementById('confirmModal').classList.remove('show');}
+
+function doFinish(){
+  closeConfirm();
   const sess=SESSIONS[curSess];let total=0,done=0;const log={};
   sess.groups.forEach(g=>g.exercises.forEach(ex=>{
-    if(ex.type==='warmup'){
-      total++;if((wuData[ex.id]||{}).done)done++;
-      log[ex.id]={type:'warmup',metrics:{...(wuData[ex.id]||{}).metrics},done:(wuData[ex.id]||{}).done,name:ex.name};
-    }else if(ex.type==='checkbox'){
-      total++;if(cbData[ex.id])done++;
-      log[ex.id]={type:'checkbox',done:cbData[ex.id]||false,name:ex.name};
-    }else{
-      total++;
-      const isSkip=!!skipped[ex.id];
-      const sd=setData[ex.id]||[];
-      const exDone=!isSkip&&sd.length>0&&sd.every(s=>s.logged);
-      if(exDone)done++;
-      // Save under canonical id with displayed name
-      log[ex.id]={
-        sets:sd.map(s=>({...s})),
-        note:notes[ex.id]||'',
-        name:ex.name, // always canonical
-        displayName:renames[ex.id]||ex.name,
-        skipped:isSkip,
-        warmupSetDone:cbWarmup[ex.id]||false,
-      };
-    }
+    if(ex.type==='warmup'){total++;if((wuData[ex.id]||{}).done)done++;log[ex.id]={type:'warmup',metrics:{...(wuData[ex.id]||{}).metrics},done:(wuData[ex.id]||{}).done,name:ex.name};}
+    else if(ex.type==='checkbox'){total++;if(cbData[ex.id])done++;log[ex.id]={type:'checkbox',done:cbData[ex.id]||false,name:ex.name};}
+    else{total++;const sd=setData[ex.id]||[];const exDone=!skipped[ex.id]&&sd.length>0&&sd.every(s=>s.logged);if(exDone)done++;
+      log[ex.id]={sets:sd.map(s=>({...s})),note:notes[ex.id]||'',name:ex.name,displayName:renames[ex.id]||ex.name,skipped:!!skipped[ex.id],warmupSetDone:cbWarmup[ex.id]||false};}
   }));
-  customExs.forEach(cx=>{
-    total++;const exDone=cx.sets.length>0&&cx.sets.every(s=>s.logged);if(exDone)done++;
-    log[cx.id]={sets:cx.sets.map(s=>({...s})),note:cx.note||'',customName:cx.name,isCustom:true,metricType:cx.metricType};
-  });
-
+  customExs.forEach(cx=>{total++;const exDone=cx.sets.length>0&&cx.sets.every(s=>s.logged);if(exDone)done++;log[cx.id]={sets:cx.sets.map(s=>({...s})),note:cx.note||'',customName:cx.name,isCustom:true,metricType:cx.metricType};});
   const mins=sessStart?Math.round((new Date()-sessStart)/60000):0;
   const now=new Date();
-  const YEAR_SEED=getSeed('year',25);
-  const yearCount=history.filter(h=>new Date(h.date).getFullYear()===now.getFullYear()).length;
-  const sessNumber=YEAR_SEED+yearCount+1;
-
+  const yearDyn=history.filter(h=>new Date(h.date).getFullYear()===now.getFullYear()).length;
+  const sessNumber=getSeed('seed_year',25)+yearDyn+1;
   const entry={date:now.toISOString(),session:curSess,label:sess.label,sub:sess.sub,done,total,duration:mins,checkin:checkinText,log,sessNumber};
   history.unshift(entry);lastSessData=entry;save();
-
   const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
-  document.getElementById('modalEye').textContent=
-    now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
-  document.getElementById('modalStats').innerHTML=
-    '<div class="modal-stat"><div class="modal-stat-val">'+done+'/'+total+'</div><div class="modal-stat-lbl">Exercises</div></div>'+
-    '<div class="modal-stat"><div class="modal-stat-val">'+(mins||'—')+'</div><div class="modal-stat-lbl">Minutes</div></div>';
+  document.getElementById('modalEye').textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
+  document.getElementById('modalStats').innerHTML='<div class="modal-stat"><div class="modal-stat-val">'+done+'/'+total+'</div><div class="modal-stat-lbl">Exercises</div></div><div class="modal-stat"><div class="modal-stat-val">'+(mins||'—')+'</div><div class="modal-stat-lbl">Minutes</div></div>';
   document.getElementById('modalQt').textContent='\u201C'+q.t+'\u201D';
   document.getElementById('modalQa').textContent=q.a;
   const btn=document.getElementById('copyBtn');if(btn){btn.classList.remove('copied');btn.innerHTML='<span>⎘</span> Copy Session Summary';}
   document.getElementById('modal').classList.add('show');
 }
 
-// ── CLIPBOARD SUMMARY ─────────────────────────────────────
-function buildSummaryText(){
-  if(!lastSessData)return'No session data.';
-  const d=new Date(lastSessData.date);
-  const sess=SESSIONS[lastSessData.session];
-  let lines=[];
-  // #9: Start with Treningsøkt #X
-  lines.push('Treningsøkt #'+(lastSessData.sessNumber||'?'));
-  lines.push('');
-  lines.push(d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
-  lines.push(lastSessData.label+(lastSessData.sub?' — '+lastSessData.sub:''));
-  lines.push('Duration: '+(lastSessData.duration||'—')+' min · '+lastSessData.done+'/'+lastSessData.total+' exercises');
-  if(lastSessData.checkin){lines.push('');lines.push('Check-in: '+lastSessData.checkin);}
-  lines.push('');
-  sess.groups.forEach(grp=>{
-    lines.push(grp.title.toUpperCase());
-    grp.exercises.forEach(ex=>{
-      const e=lastSessData.log[ex.id];if(!e)return;
-      if(ex.type==='warmup'){
-        const mv=e.metrics||{};
-        lines.push((e.done?'✓ ':'○ ')+ex.name+' — Setting '+(mv.setting||'?')+' · '+(mv.duration||'?')+' min · '+(mv.distance||'?')+' m');
-      }else if(ex.type==='checkbox'){
-        lines.push((e.done?'✓ ':'○ ')+ex.name);
-      }else{
-        if(e.skipped){lines.push('⊘ '+(e.displayName||ex.name)+' (skipped)');return;}
-        const sets=(e.sets||[]).filter(s=>s.logged);
-        const doneAll=(e.sets||[]).length>0&&(e.sets||[]).every(s=>s.logged);
-        const dispName=e.displayName||ex.name;
-        lines.push((doneAll?'✓ ':'○ ')+dispName);
-        if(e.warmupSetDone)lines.push('  Warm-up: 20 kg × 1 set ✓');
-        if(sets.length)lines.push('  '+sets.map((s,i)=>'S'+(i+1)+': '+fmtSet(s)).join(' · '));
-        if(e.note)lines.push('  Note: '+e.note);
-      }
-    });
-    lines.push('');
-  });
-  const customs=Object.entries(lastSessData.log).filter(([,v])=>v.isCustom);
-  if(customs.length){
-    lines.push('ADDITIONAL EXERCISES');
-    customs.forEach(([,v])=>{
-      const sets=(v.sets||[]).filter(s=>s.logged);
-      lines.push(((v.sets||[]).every(s=>s.logged)?'✓ ':'○ ')+(v.customName||'Custom'));
-      if(sets.length)lines.push('  '+sets.map((s,i)=>'S'+(i+1)+': '+fmtCustomSet(s,v.metricType)).join(' · '));
-      if(v.note)lines.push('  Note: '+v.note);
-    });
-  }
-  return lines.join('\n');
+function resumeSession(){
+  history.shift();lastSessData=null;
+  try{localStorage.setItem('tlog_h',JSON.stringify(history.slice(0,60)));}catch(e){}
+  document.getElementById('modal').classList.remove('show');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-session').classList.add('active');
+  document.querySelectorAll('.nav-btn')[1].classList.add('active');
+  document.getElementById('finishBar').style.display='flex';
 }
-
-function copySummary(){
-  const text=buildSummaryText();
-  const btn=document.getElementById('copyBtn');
-  navigator.clipboard.writeText(text).then(()=>{btn.innerHTML='<span>✓</span> Copied';btn.classList.add('copied');})
-  .catch(()=>{
-    const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';
-    document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
-    btn.innerHTML='<span>✓</span> Copied';btn.classList.add('copied');
-  });
-}
-
 function closeModal(){
   document.getElementById('modal').classList.remove('show');
   sessStart=new Date();initSessState(curSess);renderSessContent();
@@ -1207,18 +1185,50 @@ function closeModal(){
   document.getElementById('finishBar').style.display='none';
   updateHomeStats();
 }
-function resetSess(){
-  if(!confirm('Reset this session?'))return;
-  sessStart=new Date();initSessState(curSess);renderSessContent();
+function resetSess(){if(!confirm('Reset this session?'))return;sessStart=new Date();initSessState(curSess);renderSessContent();}
+
+// ── CLIPBOARD ─────────────────────────────────────────────────────────
+function buildSummaryText(entry){
+  const e=entry||lastSessData;if(!e)return'No session data.';
+  const d=new Date(e.date);const sess=SESSIONS[e.session];
+  let lines=['Treningsøkt #'+(e.sessNumber||'?'),'',
+    d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),
+    e.label+(e.sub?' — '+e.sub:''),
+    'Duration: '+(e.duration||'—')+' min · '+e.done+'/'+e.total+' exercises'];
+  if(e.checkin){lines.push('');lines.push('Check-in: '+e.checkin);}
+  lines.push('');
+  sess.groups.forEach(grp=>{
+    lines.push(grp.title.toUpperCase());
+    grp.exercises.forEach(ex=>{
+      const le=e.log[ex.id];if(!le)return;
+      if(ex.type==='warmup'){const mv=le.metrics||{};lines.push((le.done?'✓ ':'○ ')+ex.name+' — Setting '+(mv.setting||'?')+' · '+(mv.duration||'?')+' min · '+(mv.distance||'?')+' m');}
+      else if(ex.type==='checkbox'){lines.push((le.done?'✓ ':'○ ')+ex.name);}
+      else{if(le.skipped){lines.push('⊘ '+(le.displayName||ex.name)+' (skipped)');return;}
+        const sets=(le.sets||[]).filter(s=>s.logged);const doneAll=(le.sets||[]).length>0&&(le.sets||[]).every(s=>s.logged);
+        lines.push((doneAll?'✓ ':'○ ')+(le.displayName||ex.name));
+        if(le.warmupSetDone)lines.push('  Warm-up: 20 kg × 1 set ✓');
+        if(sets.length)lines.push('  '+sets.map((s,i)=>'S'+(i+1)+': '+fmtSet(s)).join(' · '));
+        if(le.note)lines.push('  Note: '+le.note);}
+    });lines.push('');
+  });
+  const customs=Object.entries(e.log).filter(([,v])=>v.isCustom);
+  if(customs.length){lines.push('ADDITIONAL');customs.forEach(([,v])=>{const sets=(v.sets||[]).filter(s=>s.logged);lines.push(((v.sets||[]).every(s=>s.logged)?'✓ ':'○ ')+(v.customName||'Custom'));if(sets.length)lines.push('  '+sets.map((s,i)=>'S'+(i+1)+': '+fmtSet(s)).join(' · '));if(v.note)lines.push('  Note: '+v.note);});}
+  return lines.join('\n');
+}
+function copySummary(entry){
+  const text=buildSummaryText(entry||lastSessData);
+  const btn=document.getElementById('copyBtn');
+  navigator.clipboard.writeText(text).then(()=>{if(btn){btn.innerHTML='<span>✓</span> Copied';btn.classList.add('copied');}})
+  .catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);if(btn){btn.innerHTML='<span>✓</span> Copied';btn.classList.add('copied');}});
 }
 
-// ── HISTORY ───────────────────────────────────────────────
+// ── HISTORY ───────────────────────────────────────────────────────────
 function renderHistory(){
   const c=document.getElementById('histList');
   if(!history.length){c.innerHTML='<div class="empty-state">No sessions logged yet.</div>';return;}
-  c.innerHTML=history.map(h=>{
+  c.innerHTML=history.map((h,idx)=>{
     const d=new Date(h.date);
-    return '<div class="hist-entry">'
+    return '<div class="hist-entry" onclick="openHistDetail('+idx+')">'
       +'<div><div class="h-date">'+d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}).toUpperCase()+'</div>'
       +'<div class="h-name">'+(h.sessNumber?'#'+h.sessNumber+' · ':'')+h.label+'</div></div>'
       +'<div class="h-right"><div class="h-stat">'+h.done+'/'+h.total+'</div>'
@@ -1227,42 +1237,123 @@ function renderHistory(){
   }).join('');
 }
 
-// ── PWA Service Worker ────────────────────────────────────
+function openHistDetail(idx){
+  const h=history[idx];if(!h)return;
+  const sess=SESSIONS[h.session];
+  const d=new Date(h.date);
+  const isMostRecent=idx===0;
+  let html='';
+  // Header
+  html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">'
+    +'<button style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0" onclick="closeHistModal()">←</button>'
+    +'</div>';
+  html+='<div class="hd-header">'
+    +'<div class="hd-sess-num">'+(h.sessNumber?'Treningsøkt #'+h.sessNumber:'Session')+'</div>'
+    +'<div class="hd-title">'+h.label+'</div>'
+    +'<div class="hd-sub">'+d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</div>'
+    +'<div class="hd-meta">'
+    +'<div class="hd-meta-item"><strong>'+h.done+'/'+h.total+'</strong>exercises</div>'
+    +'<div class="hd-meta-item"><strong>'+(h.duration||'—')+'</strong>minutes</div>'
+    +'</div></div>';
+  if(h.checkin){html+='<div class="hd-checkin">'+esc(h.checkin)+'</div>';}
+  // Exercises
+  sess.groups.forEach(grp=>{
+    const grpExs=grp.exercises.filter(ex=>h.log[ex.id]);
+    if(!grpExs.length)return;
+    html+='<div class="hd-group"><div class="hd-group-title">'+grp.title+'</div>';
+    grp.exercises.forEach(ex=>{
+      const le=h.log[ex.id];if(!le)return;
+      if(ex.type==='warmup'){
+        const mv=le.metrics||{};
+        html+='<div class="hd-ex'+(le.done?' hd-ex-done':'')+'"><div class="hd-ex-name">'+(le.done?'<div class="hd-ex-check">✓</div>':'')+''+ex.name+'</div>'
+          +'<div style="font-size:11px;color:var(--muted)">Setting '+(mv.setting||'?')+' · '+(mv.duration||'?')+' min · '+(mv.distance||'?')+' m</div></div>';
+      } else if(ex.type==='checkbox'){
+        html+='<div class="hd-ex'+(le.done?' hd-ex-done':'')+'"><div class="hd-ex-name">'+(le.done?'<div class="hd-ex-check">✓</div>':'')+''+ex.name+'</div></div>';
+      } else {
+        const sets=(le.sets||[]).filter(s=>s.logged);
+        const isSkip=le.skipped;
+        html+='<div class="hd-ex'+((!isSkip&&sets.length>0&&(le.sets||[]).every(s=>s.logged))?' hd-ex-done':'')+(isSkip?' hd-ex-skipped':'')+'"><div class="hd-ex-name">'
+          +(isSkip?'<div class="hd-ex-skip">⊘</div>':sets.length>0&&(le.sets||[]).every(s=>s.logged)?'<div class="hd-ex-check">✓</div>':'')
+          +(le.displayName||ex.name)+'</div>';
+        if(le.warmupSetDone)html+='<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Warm-up: 20 kg ✓</div>';
+        if(sets.length){html+='<div class="hd-sets">'+sets.map((s,i)=>'<div class="hd-set-chip">S'+(i+1)+': '+fmtSet(s)+'</div>').join('')+'</div>';}
+        if(le.note)html+='<div class="hd-note">'+esc(le.note)+'</div>';
+        html+='</div>';
+      }
+    });
+    html+='</div>';
+  });
+  // Buttons
+  html+='<div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">';
+  const copyBtnId='histCopyBtn_'+idx;
+  html+='<button class="modal-btn-outline" id="'+copyBtnId+'" onclick="histCopy('+idx+',\''+copyBtnId+'\')"><span>⎘</span> Copy Summary</button>';
+  if(isMostRecent){
+    html+='<button class="modal-btn-gold" onclick="continueSession('+idx+')">↩ Continue This Session</button>';
+  }
+  html+='</div>';
+  document.getElementById('histModalContent').innerHTML=html;
+  document.getElementById('histModal').classList.add('show');
+}
+
+function closeHistModal(){document.getElementById('histModal').classList.remove('show');}
+
+function histCopy(idx,btnId){
+  const h=history[idx];if(!h)return;
+  const text=buildSummaryText(h);
+  const btn=document.getElementById(btnId);
+  navigator.clipboard.writeText(text).then(()=>{if(btn){btn.innerHTML='<span>✓</span> Copied';btn.classList.add('copied');}})
+  .catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);if(btn){btn.innerHTML='<span>✓</span> Copied';btn.classList.add('copied');}});
+}
+
+function continueSession(idx){
+  // Restore most recent session — remove from history and restore state
+  const h=history[idx];if(!h)return;
+  // Only allow for most recent
+  if(idx!==0)return;
+  history.shift();
+  try{localStorage.setItem('tlog_h',JSON.stringify(history.slice(0,60)));}catch(e){}
+  closeHistModal();
+  // Switch to the session tab
+  curSess=h.session;sessStart=new Date();
+  initSessState(curSess);
+  // Restore logged set data from history
+  const sess=SESSIONS[curSess];
+  sess.groups.forEach(g=>g.exercises.forEach(ex=>{
+    if(ex.type==='warmup'&&h.log[ex.id]){wuData[ex.id]={metrics:{...h.log[ex.id].metrics},done:h.log[ex.id].done};}
+    else if(ex.type==='checkbox'&&h.log[ex.id]){cbData[ex.id]=h.log[ex.id].done;}
+    else if(h.log[ex.id]){
+      const le=h.log[ex.id];
+      if(le.sets)setData[ex.id]=le.sets.map(s=>({...s}));
+      if(le.note)notes[ex.id]=le.note;
+      if(le.skipped)skipped[ex.id]=true;
+      if(le.warmupSetDone)cbWarmup[ex.id]=true;
+      if(le.displayName&&le.displayName!==ex.name)renames[ex.id]=le.displayName;
+    }
+  }));
+  checkinText=h.checkin||'';
+  // Navigate to session page
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-session').classList.add('active');
+  document.querySelectorAll('.nav-btn')[1].classList.add('active');
+  document.getElementById('finishBar').style.display='flex';
+  // Select the right tab
+  const tabs=document.querySelectorAll('.sess-tab');
+  const tabMap={A:0,B:1,C:2};
+  tabs.forEach(t=>t.classList.remove('active'));
+  if(tabs[tabMap[curSess]])tabs[tabMap[curSess]].classList.add('active');
+  renderSessContent();
+  updateHomeStats();
+}
+
+// ── PWA ───────────────────────────────────────────────────────────────
 (function(){
-  if ('serviceWorker' in navigator) {
-    const sw = `
-const CACHE = 'trening-v3';
-self.addEventListener('install', e => { self.skipWaiting(); });
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys =>
-    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-  ));
-  self.clients.claim();
-});
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request).catch(() =>
-      new Response('Offline', {status: 503})
-    ))
-  );
-});`;
-    const swBlob = new Blob([sw], {type: 'text/javascript'});
-    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+  if('serviceWorker' in navigator){
+    const sw=`const CACHE='trening-v4';self.addEventListener('install',e=>{self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(n=>n!==CACHE).map(n=>caches.delete(n)))));self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>new Response('Offline',{status:503}))));});`;
+    const b=new Blob([sw],{type:'text/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(b)).catch(()=>{});
   }
 })();
-
-function getSeed(key,def){
-  try{const v=localStorage.getItem('tlog_seed_'+key);return v!==null?parseInt(v):def;}catch(e){return def;}
-}
-function saveSeed(key,val){
-  try{localStorage.setItem('tlog_seed_'+key,String(parseInt(val)||0));}catch(e){}
-}
-function loadSeedInputs(){
-  const y=document.getElementById('yearSeedInp');
-  const m=document.getElementById('monthSeedInp');
-  if(y)y.value=getSeed('year',25);
-  if(m)m.value=getSeed('month',2);
-}
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
