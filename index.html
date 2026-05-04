@@ -22,7 +22,7 @@
   --gold-glow:rgba(255,175,0,0.15);--gold-glow2:rgba(255,175,0,0.08);--gold-glow3:rgba(255,175,0,0.04);
   --logged-bg:rgba(255,175,0,0.06);--logged-border:rgba(255,175,0,0.28);
   --skipped-bg:rgba(90,116,148,0.08);--skipped-border:rgba(90,116,148,0.3);
-  --rehab-color:#e09060;--rehab-bg:rgba(224,144,96,0.10);
+  --rehab-color:#7ab8e8;--rehab-bg:rgba(122,184,232,0.10);
   --breath-color:#5b9bd5;--breath-bg:rgba(91,155,213,0.10);
   --warn:#d44030;--radius:3px;
 }
@@ -104,7 +104,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .last-body strong{color:var(--text);font-weight:500}
 
 /* SESSION TABS */
-.sess-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border-md);border-radius:var(--radius);overflow:hidden;margin-bottom:22px}
+.sess-tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border-md);border-radius:var(--radius);overflow:hidden;margin-bottom:22px}
 .sess-tab{background:var(--surface);padding:15px 8px;cursor:pointer;border:none;text-align:left;transition:background .2s;position:relative}
 .sess-tab::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .25s;transform-origin:center}
 .sess-tab.active{background:var(--gold-glow2)}
@@ -159,7 +159,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .ex-name-renamed{color:var(--gold);opacity:0.9}
 .ex-presc{font-size:11px;color:var(--muted);margin-top:2px}
 .ex-tags{display:flex;gap:5px;align-items:center;flex-shrink:0;flex-wrap:wrap}
-.ex-tag-rehab{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rehab-color);background:var(--rehab-bg);padding:2px 7px;border-radius:20px;border:1px solid rgba(224,144,96,0.2)}
+.ex-tag-rehab{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rehab-color);background:var(--rehab-bg);padding:2px 7px;border-radius:20px;border:1px solid rgba(122,184,232,0.2)}
 .ex-tag-breath{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--breath-color);background:var(--breath-bg);padding:2px 7px;border-radius:20px;border:1px solid rgba(91,155,213,0.2)}
 .ex-summary{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);white-space:nowrap;line-height:1}
 .skip-toggle{width:28px;height:28px;border-radius:4px;border:1.5px solid var(--border-lt);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:11px;color:var(--faint);background:transparent;font-family:'DM Sans',sans-serif;padding:0}
@@ -315,18 +315,32 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .hd-meta{display:flex;gap:16px;margin-top:10px}
 .hd-meta-item{font-size:11px;color:var(--muted)}
 .hd-meta-item strong{color:var(--gold);font-family:'Playfair Display',serif;font-size:18px;display:block;font-weight:400}
-.hd-checkin{padding:10px 12px;background:var(--gold-glow3);border-left:2px solid rgba(255,175,0,0.3);border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;font-size:12px;color:var(--text2);font-style:italic;line-height:1.5}
-.hd-group{margin-bottom:18px}
+
+.hd-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:4px}
+/* HISTORY DETAIL MODAL */
+.hist-detail-modal{background:var(--bg2);max-width:480px;width:100%;max-height:90vh;overflow-y:auto;border-radius:var(--radius) var(--radius) 0 0;border-top:1px solid var(--border-md);position:relative}
+.hd-header{padding:28px 20px 20px;position:relative;border-bottom:1px solid var(--border)}
+.hd-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hd-close{position:absolute;top:20px;right:20px;width:30px;height:30px;border-radius:50%;background:var(--surface2);border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--muted);transition:all .2s}
+.hd-close:hover{color:var(--text);border-color:var(--border-lt)}
+.hd-eye{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.hd-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--text);margin-bottom:6px;line-height:1.1}
+.hd-meta{font-size:12px;color:var(--muted);margin-bottom:2px}
+.hd-checkin{margin:14px 20px 0;padding:10px 12px;background:var(--gold-glow3);border-left:2px solid rgba(255,175,0,0.3);border-radius:0 var(--radius) var(--radius) 0;font-size:12px;color:var(--text2);font-style:italic;line-height:1.5}
+.hd-group{padding:14px 20px 0}
 .hd-group-title{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);opacity:0.8;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-.hd-ex{margin-bottom:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.hd-ex{margin-bottom:8px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
 .hd-ex.hd-ex-done{border-color:var(--logged-border);background:var(--logged-bg)}
 .hd-ex.hd-ex-skipped{opacity:0.6}
-.hd-ex-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.hd-ex-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px;display:flex;align-items:center;gap:8px}
 .hd-ex-check{width:16px;height:16px;border-radius:50%;background:var(--gold);display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:#0a0f18;font-weight:700;flex-shrink:0}
 .hd-ex-skip{width:16px;height:16px;border-radius:50%;background:rgba(90,116,148,0.3);display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);flex-shrink:0}
 .hd-sets{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
 .hd-set-chip{font-size:11px;color:var(--text2);background:var(--surface2);border:1px solid var(--border);padding:3px 8px;border-radius:2px}
 .hd-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:4px}
+/* History detail modal needs its own positioning */
+#histModal{align-items:flex-end}
+#histModal #histModalContent{background:var(--bg2);border-radius:var(--radius) var(--radius) 0 0;border-top:2px solid var(--gold);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding-bottom:32px}
 </style>
 </head>
 <body>
@@ -388,9 +402,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <!-- SESSION -->
   <div class="page" id="page-session">
     <div class="sess-tabs">
-      <button class="sess-tab active" onclick="selectSess('A',this)"><div class="stab-name">Sun Eater</div><div class="stab-sub">Chest · Core</div></button>
-      <button class="sess-tab" onclick="selectSess('B',this)"><div class="stab-name">Bridge 4</div><div class="stab-sub">Pull · Legs</div></button>
-      <button class="sess-tab" onclick="selectSess('C',this)"><div class="stab-name">Sylphrena</div><div class="stab-sub">Freestyle</div></button>
+      <button class="sess-tab active" onclick="selectSess('A',this)"><div class="stab-name">Sun Eater</div><div class="stab-sub">Incline · Core</div></button>
+      <button class="sess-tab" onclick="selectSess('B',this)"><div class="stab-name">Bridge 4</div><div class="stab-sub">Flat · Pull · Legs</div></button>
+      <button class="sess-tab" onclick="selectSess('C',this)"><div class="stab-name">Hathsin</div><div class="stab-sub">Zone 2 · Breath</div></button>
+      <button class="sess-tab" onclick="selectSess('D',this)"><div class="stab-name">Sylphrena</div><div class="stab-sub">Freestyle</div></button>
     </div>
     <div id="sessContent"></div>
   </div>
@@ -429,9 +444,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 </div>
 
 <!-- HISTORY DETAIL MODAL -->
-<div class="modal-ov" id="histModal">
-  <div class="hist-detail-modal" id="histModalContent"></div>
-</div>
+<div class="modal-ov" id="histModal"><div id="histModalContent" style="max-width:480px;width:100%;max-height:90vh;overflow-y:auto"></div></div>
 
 <!-- CONTEXT MENU -->
 <div class="ctx-overlay" id="ctxOverlay" style="display:none" onclick="closeCtx()"></div>
@@ -538,7 +551,48 @@ const SESSIONS={
       {id:"rewind_b",type:"checkbox",name:"Rewind — Self-massage + Softening (5 min)",breath:true},
     ]},
   ]},
-  C:{label:"Sylphrena",sub:"Freestyle",groups:[]},
+  C:{label:"Hathsin",sub:"Zone 2 · Breath Training",groups:[
+    {title:"Before You Start",exercises:[
+      {id:"hathsin_breath_check",type:"checkbox",name:"Breathing check — nose only, 2–3 in / 3–4 out, pace yourself before starting",breath:true},
+    ]},
+    {title:"Option A — Rowing Machine",exercises:[
+      {id:"hathsin_row",type:"warmup",name:"Rowing Machine (Zone 2 — nasal breathing only)",metrics:[
+        {id:"setting",label:"Setting",val:"7",step:1,unit:"",min:1,max:20},
+        {id:"duration",label:"Duration",val:"25",step:5,unit:"min",min:5,max:60},
+        {id:"distance",label:"Distance",val:"0",step:100,unit:"m",min:0,max:10000},
+      ],breath:true},
+      {id:"hathsin_row_note",type:"checkbox",name:"Nasal breathing maintained throughout ✓",breath:true},
+    ]},
+    {title:"Option B — Cycling",exercises:[
+      {id:"hathsin_bike",type:"warmup",name:"Cycling (Zone 2 — nasal breathing only)",metrics:[
+        {id:"setting",label:"Level",val:"3",step:1,unit:"",min:1,max:20},
+        {id:"duration",label:"Duration",val:"25",step:5,unit:"min",min:5,max:60},
+        {id:"distance",label:"RPM",val:"70",step:5,unit:"rpm",min:30,max:120},
+      ],breath:true},
+      {id:"hathsin_bike_note",type:"checkbox",name:"Nasal breathing maintained throughout ✓",breath:true},
+    ]},
+    {title:"Rewind",exercises:[
+      {id:"hathsin_rewind",type:"checkbox",name:"5 min cool-down — slow nasal breathing, soft pace",breath:true},
+    ]},
+  ]},
+  D:{label:"Sylphrena",sub:"Freestyle",groups:[]},
+        {id:"duration",label:"Duration",val:"25",step:5,unit:"min",min:5,max:60},
+        {id:"distance",label:"Distance",val:"5000",step:500,unit:"m",min:0,max:20000},
+      ]},
+      {id:"storm_row_done",type:"checkbox",name:"Session complete ✓"},
+    ]},
+    {title:"Option B — Cycling",exercises:[
+      {id:"storm_bike",type:"warmup",name:"Cycling",metrics:[
+        {id:"setting",label:"Level",val:"5",step:1,unit:"",min:1,max:20},
+        {id:"duration",label:"Duration",val:"25",step:5,unit:"min",min:5,max:60},
+        {id:"distance",label:"Distance",val:"10",step:1,unit:"km",min:0,max:100},
+      ]},
+      {id:"storm_bike_done",type:"checkbox",name:"Session complete ✓"},
+    ]},
+    {title:"Notes",exercises:[
+      {id:"storm_notes",type:"checkbox",name:"Log any observations below"},
+    ]},
+  ]},
 };
 
 // ── STATE ─────────────────────────────────────────────────────────────
@@ -1228,9 +1282,11 @@ function renderHistory(){
   if(!history.length){c.innerHTML='<div class="empty-state">No sessions logged yet.</div>';return;}
   c.innerHTML=history.map((h,idx)=>{
     const d=new Date(h.date);
-    return '<div class="hist-entry" onclick="openHistDetail('+idx+')">'
+    return '<div class="hist-entry" onclick="openHistDetail('+idx+')" style="cursor:pointer">'
       +'<div><div class="h-date">'+d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}).toUpperCase()+'</div>'
-      +'<div class="h-name">'+(h.sessNumber?'#'+h.sessNumber+' · ':'')+h.label+'</div></div>'
+      +'<div class="h-name">'+(h.sessNumber?'#'+h.sessNumber+' · ':'')+h.label+'</div>'
+      +'<div style="font-size:10px;color:var(--faint);margin-top:2px">Tap to view ›</div>'
+      +'</div>'
       +'<div class="h-right"><div class="h-stat">'+h.done+'/'+h.total+'</div>'
       +'<div class="h-sub">'+(h.duration?h.duration+' min':'—')+'</div></div>'
       +'</div>';
@@ -1339,7 +1395,7 @@ function continueSession(idx){
   document.getElementById('finishBar').style.display='flex';
   // Select the right tab
   const tabs=document.querySelectorAll('.sess-tab');
-  const tabMap={A:0,B:1,C:2};
+  const tabMap={A:0,B:1,C:2,D:3};
   tabs.forEach(t=>t.classList.remove('active'));
   if(tabs[tabMap[curSess]])tabs[tabMap[curSess]].classList.add('active');
   renderSessContent();
