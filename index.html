@@ -340,7 +340,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .hd-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:4px}
 /* History detail modal needs its own positioning */
 #histModal{align-items:flex-end}
-#histModal #histModalContent{background:var(--bg2);border-radius:var(--radius) var(--radius) 0 0;border-top:2px solid var(--gold);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding-bottom:32px}
+#histModal #histModalContent{background:var(--bg2);border-radius:var(--radius) var(--radius) 0 0;border-top:2px solid var(--gold);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding-bottom:32px;transform:translateY(40px);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+#histModal.show #histModalContent{transform:translateY(0)}
 </style>
 </head>
 <body>
@@ -444,7 +445,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 </div>
 
 <!-- HISTORY DETAIL MODAL -->
-<div class="modal-ov" id="histModal"><div id="histModalContent" style="max-width:480px;width:100%;max-height:90vh;overflow-y:auto"></div></div>
+<div class="modal-ov" id="histModal" onclick="closeHistModal()"><div id="histModalContent" style="max-width:480px;width:100%;max-height:90vh;overflow-y:auto;pointer-events:auto" onclick="event.stopPropagation()"></div></div>
 
 <!-- CONTEXT MENU -->
 <div class="ctx-overlay" id="ctxOverlay" style="display:none" onclick="closeCtx()"></div>
