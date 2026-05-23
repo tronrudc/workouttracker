@@ -947,43 +947,50 @@ const QUOTES=[
 
 // ── SESSION TEMPLATES ─────────────────────────────────────────────────
 const SESSIONS={
-  A:{label:"Sun Eater",sub:"Chest · Core · Arms · Back",groups:[
+  A:{label:"Sun Eater",sub:"Core · Arms",groups:[
     {title:"Warm-Up",exercises:[
       {id:"wu_row_a",type:"warmup",name:"Rowing Machine",metrics:[
-        {id:"setting",label:"Setting",val:"9",step:1,unit:"",min:1,max:20},
+        {id:"setting",label:"Setting",val:"8",step:1,unit:"",min:1,max:20},
         {id:"duration",label:"Duration",val:"5",step:1,unit:"min",min:1,max:30},
         {id:"distance",label:"Distance",val:"1000",step:50,unit:"m",min:0,max:5000},
       ]},
+      {id:"wu_bands_a",type:"checkbox",name:"Band Pull-Aparts"},
       {id:"wu_mobility_a",type:"checkbox",name:"Mobility"},
       {id:"wu_breath_a",type:"checkbox",name:"Breathing reset",breath:true},
     ]},
-    {title:"Core + Chest Supersets",exercises:[
-      {id:"incline_bench",name:"Incline Barbell Bench Press",prescription:"4 × 8 · 2.5 min rest",sets:4,dw:"35",dr:"8",note:"Progression: add 2.5 kg when all 4×8 clean, twice in a row.",warmupSet:true,breath:true,
-        abbyNote:"Engage your core instead of flaring at the ribs. Draw your ribs towards your hips. Exhale on the press, inhale on the way down . belly first, not chest."},
+    {title:"Primary Block",exercises:[
+      {id:"incline_bench",name:"Incline Barbell Bench Press",prescription:"4 × 8 · 2.5 min rest",sets:4,dw:"35",dr:"8",
+        note:"Exhale on the press, inhale on the way down. Ribs toward hips, core braced.",
+        abbyNote:"Engage your core instead of flaring at the ribs. Draw your ribs towards your hips. Exhale on the press, inhale on the way down. Belly first, not chest.",
+        warmupSet:true,breath:true},
     ]},
-    {title:"Superset 2A/2B",superset:true,exercises:[
-      {id:"cable_crunch",name:"Weighted Cable Crunch",prescription:"3 × 13",sets:3,dw:"27",dr:"13",note:"Hold 27 kg, push toward 3×15 before adding weight.",breath:true,
-        abbyNote:"Exhale fully as you crunch down . let the breath drive the movement, not the other way around."},
-      {id:"dead_bug",name:"Dead Bug",prescription:"3 × 8/side",sets:3,dw:"—",dr:"8",note:"Active rest from the crunch. Keep it slow. If you rush it, you're doing it wrong.",noStepW:true,breath:true,
-        abbyNote:"Controlled movements . 1 count inhale, 3–4 count slow exhale as you extend the limbs. No breath-holding under any circumstance."},
+    {title:"Core Superset",superset:true,exercises:[
+      {id:"cable_crunch",name:"Weighted Cable Crunch",prescription:"3 × 13",sets:3,dw:"27",dr:"13",
+        note:"Hold 27 kg. Push toward 3×15 before adding weight.",
+        abbyNote:"Exhale fully as you crunch down. Let the breath drive the movement, not the other way around.",
+        breath:true},
+      {id:"dead_bug",type:"checkbox",name:"Dead Bug",breath:true},
     ]},
-    {title:"Chest-Supported Row",exercises:[
-      {id:"cs_row_a",name:"Chest-Supported DB Row",prescription:"3 × 10–12 · 2 min rest",sets:3,dw:"16",dr:"10",note:"You should feel this exclusively in your mid-back and rear delts. No lower back involvement at all. If your lower back is working, the chest pad isn't supporting you properly . adjust the bench angle. Progression: add 2 kg when 3×12 is controlled across both sets.",breath:true,
-        abbyNote:"Exhale during the pull, inhale on the return . lower ribs expanding, shoulders staying down."},
+    {title:"Pull Block",exercises:[
+      {id:"pullups",name:"Pull-Ups",prescription:"3 × max · 3 min rest",sets:3,dw:"BW",dr:"5",
+        note:"Stop 2 reps before failure. Track total reps. Current baseline 7. Target: +1 rep per session.",
+        noStepW:true},
     ]},
-    {title:"Superset 4A/4B",superset:true,exercises:[
-      {id:"cable_fly",name:"Cable Pec Fly",prescription:"3 × 12",sets:3,dw:"15",dr:"12",note:"15–18 kg per side. Keep a slight elbow bend throughout. Pause at the peak contraction.",
-        abbyNote:"Use a quick reset if you feel chest tightness . purse lips like blowing through a straw, then transition to nasal breathing."},
-      {id:"bird_dog",name:"Bird Dog",prescription:"3 × 8/side",sets:3,dw:"—",dr:"8",note:"Pairs with pec fly as active rest. Move slowly and deliberately. If you rush it, you lose the diaphragm connection entirely.",noStepW:true,breath:true,
-        abbyNote:"Draw your ribs towards your hips before you extend. That's your core engaging . not your lower back taking over."},
+    {title:"Back Block",exercises:[
+      {id:"seated_row",name:"Seated Machine Row",prescription:"3 × 12 · 2 min rest",sets:3,dw:"36",dr:"12",
+        note:"Control the return. Shoulders down. Not too far forward.",
+        rehab:true},
     ]},
-    {title:"Arm Superset 5A/5B",superset:true,exercises:[
-      {id:"incline_curl",name:"Incline DB Bicep Curl",prescription:"3 × 10–12",sets:3,dw:"9",dr:"10",note:"Targets the long head of the bicep specifically. It will feel harder than your EZ bar work at the same weight. That's correct. Progression: curls at 9–10 kg. Move to 10–11 kg when 3×12 is clean.",
-        abbyNote:"Between sets . drop the shoulders, shift attention to the exhale. Even 10 seconds of this between exercises maintains the pattern you're building."},
-      {id:"tricep_push_a",name:"Tricep Rope Pushdown",prescription:"3 × 12–15",sets:3,dw:"15",dr:"12",note:"Push toward 3×15 before increasing weight."},
+    {title:"Arm Superset",superset:true,exercises:[
+      {id:"incline_curl",name:"Incline DB Bicep Curl",prescription:"3 × 10–12",sets:3,dw:"9",dr:"10",
+        note:"Targets the long head of the bicep. Will feel harder than EZ bar at the same weight."},
+      {id:"tricep_pushdown",name:"Tricep Rope Pushdown",prescription:"3 × 12–15",sets:3,dw:"15",dr:"12",
+        note:"Full extension. Don't flare elbows."},
     ]},
     {title:"Finisher",exercises:[
-      {id:"face_pulls_a",name:"Face Pulls",prescription:"2 × 15 · 60 sec",sets:2,dw:"27",dr:"15",note:"Mandatory. Protects the rotator cuff on every push day. Non-negotiable even on depleted sessions if the ⭐ block is done.",rehab:true},
+      {id:"face_pulls_a",name:"Face Pulls",prescription:"2 × 15 · 60 sec",sets:2,dw:"27",dr:"15",
+        note:"Mandatory. Protects the rotator cuff every session.",
+        rehab:true},
     ]},
     {title:"Rewind",exercises:[
       {id:"rewind_a",type:"checkbox",name:"Pause Pyramid",breath:true},
@@ -1002,7 +1009,7 @@ const SESSIONS={
     {title:"Primary Block",exercises:[
       {id:"flat_bench",name:"Flat Barbell Bench Press",prescription:"3 × 8 · 2.5 min rest",sets:3,dw:"40",dr:"8",
         note:"Core braced, ribs toward hips. Exhale on press. Do not attempt on depleted days.",
-        abbyNote:"Exhale on press. Keep the lower ribs from flaring . think ribs toward hips as you push.",
+        abbyNote:"Exhale on press. Keep the lower ribs from flaring. Think ribs toward hips as you push.",
         warmupSet:true,breath:true},
     ]},
     {title:"Leg Superset",superset:true,exercises:[
@@ -1012,24 +1019,24 @@ const SESSIONS={
         note:"Target 3×15 next progression."},
     ]},
     {title:"Back Block",exercises:[
-      {id:"b_dlp",name:"Diverging Lat Pulldown (kneeling)",prescription:"3 × 10 · 2 min rest",sets:3,dw:"54",dr:"10",
-        note:"Exhale during the pull. Inhale through nose on return . lower ribs expanding, not chest rising. If you lose this, stop and reset.",
-        abbyNote:"Exhale during the pull. Inhale through your nose on the way back up . feel the lower ribs expand, not the chest rise. If you lose the pattern, stop and reset.",
+      {id:"b_dlp",name:"Diverging Lat Pulldown",prescription:"3 × 10 · 2 min rest",sets:3,dw:"54",dr:"10",
+        note:"Exhale during the pull. Inhale through nose on return. Lower ribs expanding, not chest rising.",
+        abbyNote:"Exhale during the pull. Inhale through your nose on the way back up. Feel the lower ribs expand, not the chest rise. If you lose the pattern, stop and reset.",
         rehab:true,breath:true},
     ]},
     {title:"Finisher",exercises:[
       {id:"b_toebar",name:"Hanging Toe-to-Bar",prescription:"3 × 8–10",sets:3,dw:"—",dr:"8",
         note:"Knee raises if needed. No kipping.",noStepW:true},
       {id:"b_shoulder_press",name:"Seated DB Shoulder Press",prescription:"3 × 8–10 · 2 min rest",sets:3,dw:"12.5",dr:"8",
-        note:"Drop shoulders consciously before every set. Progression: 3×8/12.5 kg → push toward 3×10 before moving to 14 kg."},
+        note:"Drop shoulders consciously before every set."},
       {id:"b_colin",name:"Colin Jackson",prescription:"2 × 8–10 · 90 sec",sets:2,dw:"—",dr:"8",
-        note:"Explosive hip drive and core stability. Controlled landing.",noStepW:true},
+        note:"Explosive hip drive and core stability.",noStepW:true},
     ]},
     {title:"Rewind",exercises:[
-      {id:"breathe_b",type:"checkbox",name:"Diaphragmatic Breathing (2–15 min). Lie down, hands on lower ribs, long exhale, gentle pause. Self-massage as shown by Abby.",breath:true},
+      {id:"rewind_b",type:"checkbox",name:"Diaphragmatic Breathing",breath:true},
     ]},
   ]},
-  C:{label:"Hathsin",sub:"Zone 2 · Breath Training",groups:[
+    C:{label:"Hathsin",sub:"Zone 2 · Breath Training",groups:[
     {title:"Before You Start",exercises:[
       {id:"hathsin_breath_check",type:"checkbox",name:"Breathing check — nose only, 2–3 in / 3–4 out, pace yourself before starting",breath:true},
     ]},
@@ -1076,8 +1083,6 @@ function getSeed(key,def){
     const v=localStorage.getItem('tlog_seed_'+key);
     if(v===null)return def;
     const n=parseFloat(v);
-    // If stored value is clearly wrong (e.g. stale from old version), reset to default
-    if(key==='seed_year'&&n>45){localStorage.setItem('tlog_seed_'+key,String(def));return def;}
     return n;
   }catch(e){return def;}
 }
@@ -1095,6 +1100,14 @@ function toggleTheme(){
 
 function init(){
   load();
+  // One-time seed reset for version 4 — clears stale localStorage seeds
+  try{
+    if(!localStorage.getItem('tlog_seed_reset_v4')){
+      localStorage.setItem('tlog_seed_year','40');
+      localStorage.setItem('tlog_seed_month','5');
+      localStorage.setItem('tlog_seed_reset_v4','1');
+    }
+  }catch(e){}
   // Restore theme
   try{
     const t=localStorage.getItem('tlog_theme');
